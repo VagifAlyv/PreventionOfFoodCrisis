@@ -1,0 +1,6 @@
+# over GitHub's 100 MB limit; fetch with src/download_large.sh
+data/raw/fews_ipc_ET.csv
+data/raw/ucdp/GEDEvent_v26_1.csv
+data/raw/ucdp/*.zip
+__pycache__/
+.DS_Store

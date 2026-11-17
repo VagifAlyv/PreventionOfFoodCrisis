@@ -1,0 +1,1014 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dark Region Hunger Monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #edf0f2;
+        --surface: #f8fafb;
+        --ink: #16202b;
+        --ink2: #4a5663;
+        --muted: #7d8894;
+        --line: #d3d9de;
+        --grid: #e3e7ea;
+        --obs: #2f6db5;
+        --model: #6b4fbb;
+        --fews: #2e8b57;
+        --dark: #3b4a5a;
+        --empty: #e3e8eb;
+        --note: #fbf3e2;
+        --note-line: #e8c98a;
+        --focus: #2f6db5;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          color-scheme: dark;
+          --paper: #10151b;
+          --surface: #171d24;
+          --ink: #e6ebef;
+          --ink2: #a9b4be;
+          --muted: #77828d;
+          --line: #2b343e;
+          --grid: #222a33;
+          --obs: #5b9be6;
+          --model: #9c83e8;
+          --fews: #4fb57e;
+          --dark: #8a9aab;
+          --empty: #222a33;
+          --note: #2a2316;
+          --note-line: #6e5527;
+          --focus: #5b9be6;
+        }
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --paper: #10151b;
+        --surface: #171d24;
+        --ink: #e6ebef;
+        --ink2: #a9b4be;
+        --muted: #77828d;
+        --line: #2b343e;
+        --grid: #222a33;
+        --obs: #5b9be6;
+        --model: #9c83e8;
+        --fews: #4fb57e;
+        --dark: #8a9aab;
+        --empty: #222a33;
+        --note: #2a2316;
+        --note-line: #6e5527;
+        --focus: #5b9be6;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font: 15px/1.55 "Public Sans", -apple-system, "Segoe UI", sans-serif;
+      }
+      main {
+        max-width: 1220px;
+        margin: 0 auto;
+        padding: 32px 16px 64px;
+      }
+      h1,
+      h2 {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      h1 {
+        font-size: clamp(30px, 4.4vw, 46px);
+        line-height: 1.08;
+        margin: 0 0 12px;
+        max-width: 17ch;
+      }
+      h2 {
+        font-size: 22px;
+        line-height: 1.25;
+        margin: 0 0 6px;
+      }
+      h3 {
+        font-size: 14px;
+        margin: 0 0 4px;
+        font-weight: 600;
+      }
+      p {
+        margin: 0 0 10px;
+      }
+      .lede {
+        color: var(--ink2);
+        max-width: 62ch;
+        font-size: 16.5px;
+      }
+      .sub {
+        color: var(--ink2);
+        font-size: 13.5px;
+        max-width: 78ch;
+      }
+      section {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 22px;
+        margin-top: 18px;
+      }
+      button,
+      select {
+        font: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+      }
+
+      /* hero */
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+        margin-top: 22px;
+      }
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+      .mapwrap {
+        position: relative;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px;
+      }
+      #map path {
+        stroke: var(--surface);
+        stroke-width: 0.12;
+        cursor: pointer;
+        transition: fill 0.45s ease;
+      }
+      #map path:hover,
+      #map path.sel {
+        stroke: var(--ink);
+        stroke-width: 0.3;
+      }
+      #map text {
+        font-size: 6px;
+        fill: var(--ink2);
+        pointer-events: none;
+      }
+      .mapwrap.is-dark #map path {
+        filter: saturate(0.85);
+      }
+      .darkbadge {
+        position: absolute;
+        top: 16px;
+        left: 18px;
+        font-size: 12.5px;
+        background: var(--dark);
+        color: var(--surface);
+        padding: 4px 9px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 1;
+      }
+      .mapwrap.is-dark .darkbadge {
+        opacity: 1;
+      }
+      .switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        overflow: hidden;
+        margin: 4px 0 14px;
+      }
+      .switch button {
+        border: 0;
+        background: var(--surface);
+        color: var(--ink2);
+        padding: 10px 12px;
+        text-align: left;
+        cursor: pointer;
+        line-height: 1.3;
+      }
+      .switch button + button {
+        border-left: 1px solid var(--line);
+      }
+      .switch button b {
+        display: block;
+        color: var(--ink);
+        font-weight: 600;
+      }
+      .switch button span {
+        font-size: 12.5px;
+      }
+      .switch button[aria-pressed="true"] {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      .switch button[aria-pressed="true"] b {
+        color: var(--paper);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 16px;
+        align-items: center;
+      }
+      .seg {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .seg button {
+        border: 0;
+        background: var(--surface);
+        color: var(--ink2);
+        padding: 6px 11px;
+        font-size: 13.5px;
+        cursor: pointer;
+      }
+      .seg button + button {
+        border-left: 1px solid var(--line);
+      }
+      .seg button[aria-pressed="true"] {
+        background: var(--ink);
+        color: var(--paper);
+      }
+      select {
+        font-size: 13.5px;
+        padding: 6px 8px;
+        border-radius: 6px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+      }
+      .lbl {
+        font-size: 13px;
+        color: var(--muted);
+        margin-right: 6px;
+      }
+      .watch {
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+      }
+      .watch li {
+        display: grid;
+        grid-template-columns: 1fr 64px 92px;
+        gap: 8px;
+        align-items: center;
+        padding: 7px 4px;
+        border-bottom: 1px solid var(--grid);
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .watch li:hover {
+        background: var(--paper);
+      }
+      .watch .c {
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      .watch .n {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+      }
+      .watch .ch {
+        text-align: right;
+        font-size: 12.5px;
+        color: var(--ink2);
+        font-variant-numeric: tabular-nums;
+      }
+      .ramp {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12.5px;
+        color: var(--ink2);
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+      .ramp i {
+        display: inline-block;
+        width: 150px;
+        height: 9px;
+        border-radius: 2px;
+      }
+
+      /* scoreboard */
+      .score {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 0;
+        margin-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+      .score > div {
+        padding: 14px 16px 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .score .k {
+        font-size: 13.5px;
+        color: var(--ink2);
+        display: flex;
+        gap: 7px;
+        align-items: center;
+      }
+      .score .v {
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 34px;
+        font-weight: 650;
+        line-height: 1.1;
+        margin-top: 4px;
+        font-variant-numeric: tabular-nums;
+      }
+      .score .d {
+        font-size: 13px;
+        color: var(--ink2);
+      }
+      .score .x {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        flex: none;
+      }
+      .note {
+        background: var(--note);
+        border-left: 3px solid var(--note-line);
+        padding: 10px 14px;
+        font-size: 14px;
+        margin-top: 16px;
+        max-width: 92ch;
+      }
+      .scroll {
+        overflow-x: auto;
+      }
+      svg {
+        display: block;
+      }
+      svg text {
+        fill: var(--ink2);
+        font-size: 11.5px;
+        font-family: inherit;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 12.5px;
+        color: var(--ink2);
+        margin: 8px 0;
+        align-items: center;
+      }
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13.5px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 7px 10px;
+        border-bottom: 1px solid var(--grid);
+        white-space: nowrap;
+      }
+      th {
+        font-size: 12.5px;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .num {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .bar {
+        height: 8px;
+        border-radius: 4px;
+        background: var(--obs);
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 16px;
+      }
+      @media (max-width: 900px) {
+        .grid2,
+        .grid3 {
+          grid-template-columns: 1fr;
+        }
+      }
+      #tip {
+        position: fixed;
+        pointer-events: none;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 8px 10px;
+        border-radius: 5px;
+        font-size: 12.5px;
+        line-height: 1.45;
+        max-width: 290px;
+        opacity: 0;
+        transition: opacity 0.08s;
+        z-index: 10;
+      }
+      ul.plain {
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+      ul.plain li {
+        margin-bottom: 6px;
+      }
+      footer {
+        color: var(--muted);
+        font-size: 12.5px;
+        margin-top: 20px;
+        max-width: 100ch;
+      }
+      footer a {
+        color: inherit;
+      }
+      .ci {
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #map path,
+        .darkbadge {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Forecasting hunger where monitoring has gone dark</h1>
+      <p class="lede">
+        In 2025 the main famine early-warning system went offline for months
+        after its funding stopped. This tool forecasts, four months ahead, how
+        much of each region in Ethiopia, Somalia and South Sudan will be in
+        crisis (IPC phase 3 or worse), using only data nobody has to go and
+        collect: satellite rainfall, market prices, conflict records and local
+        news. Every score below is from real data the model never saw while
+        training.
+      </p>
+
+      <div class="hero">
+        <div class="mapwrap" id="mapwrap">
+          <span class="darkbadge">Last ground assessment is 12+ months old</span>
+          <svg id="map" role="img" aria-label="Map of forecast share in crisis by region"></svg>
+        </div>
+        <div>
+          <div class="switch" role="group" aria-label="Scenario">
+            <button id="scLive" aria-pressed="true">
+              <b>Monitoring working</b
+              ><span>A recent FEWS NET assessment exists</span>
+            </button>
+            <button id="scDark" aria-pressed="false">
+              <b>Monitoring gone dark</b
+              ><span>No assessment in the last 12 months</span>
+            </button>
+          </div>
+          <div class="row">
+            <span><span class="lbl">Country</span><span class="seg" id="countrySeg"></span></span>
+            <span><span class="lbl">Forecast for</span><select id="dateSel" aria-label="Forecast date"></select></span>
+          </div>
+          <h3 style="margin-top: 16px" id="watchTitle"></h3>
+          <p class="sub" id="watchSub" style="margin: 0"></p>
+          <ul class="watch" id="watch"></ul>
+          <div class="ramp" id="ramp"></div>
+        </div>
+      </div>
+
+      <section>
+        <h2 id="scoreTitle">How accurate is it?</h2>
+        <p class="sub" id="scoreSub"></p>
+        <div class="score" id="score"></div>
+        <div class="note" id="scoreNote"></div>
+      </section>
+
+      <section>
+        <div class="row" style="justify-content: space-between">
+          <h2 id="regionTitle">Region detail</h2>
+          <select id="regionSel" aria-label="Region"></select>
+        </div>
+        <p class="sub">
+          Share of the region's monitored units in IPC phase 3 or worse. Above
+          the dashed 50% line the region counts as in crisis. Forecasts are
+          shown for the test period only, each made four months before the date.
+        </p>
+        <div class="legend" id="lineLegend"></div>
+        <div class="scroll"><svg id="line"></svg></div>
+        <div class="grid3" id="smalls"></div>
+      </section>
+
+      <section>
+        <h2>Every region, every assessment</h2>
+        <p class="sub">
+          One cell per region and FEWS NET assessment date. Click a row to open
+          that region.
+        </p>
+        <div class="row" style="margin: 10px 0 4px">
+          <span><span class="lbl">Show</span><span class="seg" id="modeSeg"></span></span>
+        </div>
+        <div class="legend" id="heatLegend"></div>
+        <div class="scroll"><svg id="heat"></svg></div>
+      </section>
+
+      <div class="grid2">
+        <section>
+          <h2>Where it fails</h2>
+          <p class="sub">
+            Largest misses of the forecast shown above, on the test period.
+          </p>
+          <div class="scroll"><table id="missTable"></table></div>
+        </section>
+        <section>
+          <h2>What it relies on</h2>
+          <p class="sub" id="impSub"></p>
+          <div id="imp"></div>
+          <ul class="plain sub" id="lessons"></ul>
+        </section>
+      </div>
+
+      <footer id="foot"></footer>
+    </main>
+    <div id="tip"></div>
+
+    <script src="data.js"></script>
+    <script>
+      const D = window.EWS_DATA;
+      const $ = (id) => document.getElementById(id);
+      const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+      const pct = (v) => (v == null ? "–" : Math.round(v * 100) + "%");
+      const NS = "http://www.w3.org/2000/svg";
+      const el = (tag, attrs = {}, text) => {
+        const e = document.createElementNS(NS, tag);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        if (text != null) e.textContent = text;
+        return e;
+      };
+      const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const fmtDate = (s) => MONTHS[+s.slice(5, 7) - 1] + " " + s.slice(0, 4);
+      const tnum = (s) => +s.slice(0, 4) + (+s.slice(5, 7) - 1) / 12;
+      const HAS_NEWS = D.rows.some((r) => r.pred_dark_news != null);
+
+      /* The forecast each scenario shows. Chosen before results were seen (see train_model.py). */
+      const SC = {
+        live: {
+          pred: "pred_full", base: "pred_persist", last: "last_share3", metrics: () => D.metrics.all,
+          name: "This tool", baseName: "Assume nothing changes",
+        },
+        dark: {
+          pred: HAS_NEWS ? "pred_dark_news" : "pred_dark_conf", base: "pred_persist_dark", last: "last_share3_dark",
+          metrics: () => D.metrics.dark, name: "This tool, in the dark", baseName: "Repeat the year-old assessment",
+        },
+      };
+      const darkKey = HAS_NEWS ? "dark_news" : "dark_conf";
+      const state = { sc: "live", country: "All", mode: "observed", region: null, date: null };
+      const COUNTRIES = ["All", "Ethiopia", "Somalia", "South Sudan"];
+      const testRows = D.rows.filter((r) => r.target_date >= D.test_from);
+      const dates = [...new Set(testRows.map((r) => r.target_date))].sort();
+      const lastObserved = D.rows.filter((r) => r.y_share3 != null).map((r) => r.target_date).sort().pop();
+      const futureDates = dates.filter((d) => d > lastObserved);
+      const gapDates = dates.filter(
+        (d) => d < lastObserved && !D.rows.some((r) => r.target_date === d && r.y_share3 != null),
+      );
+      state.date = futureDates[futureDates.length - 1] || dates[dates.length - 1];
+      const key = (r) => r.country + "|" + r.region;
+      const byKey = new Map(D.rows.map((r) => [key(r) + "|" + r.target_date, r]));
+      const CC = { ET: "Ethiopia", SO: "Somalia", SS: "South Sudan" };
+
+      /* IPC-derived ramp: share of a region in phase 3+ */
+      const STOPS = [
+        [0, "#e4ebe3"], [0.2, "#f6dc6b"], [0.5, "#e67800"], [0.75, "#c80000"], [1, "#640000"],
+      ];
+      function ramp(v) {
+        if (v == null) return css("--empty");
+        for (let i = 1; i < STOPS.length; i++) {
+          const [a, ca] = STOPS[i - 1], [b, cb] = STOPS[i];
+          if (v <= b) return `color-mix(in oklab, ${cb} ${Math.round(((v - a) / (b - a)) * 100)}%, ${ca})`;
+        }
+        return STOPS[STOPS.length - 1][1];
+      }
+      const rampCss = `linear-gradient(90deg, ${STOPS.map(([v, c]) => `${c} ${v * 100}%`).join(",")})`;
+
+      /* tooltip */
+      const tip = $("tip");
+      function showTip(e, html) {
+        tip.innerHTML = html;
+        tip.style.opacity = 1;
+        const w = tip.offsetWidth, h = tip.offsetHeight;
+        tip.style.left = Math.min(window.innerWidth - w - 8, e.clientX + 14) + "px";
+        tip.style.top = Math.max(8, e.clientY - h - 12) + "px";
+      }
+      const hideTip = () => (tip.style.opacity = 0);
+
+      function seg(id, options, k, after) {
+        const box = $(id);
+        box.innerHTML = "";
+        options.forEach(([val, label]) => {
+          const b = document.createElement("button");
+          b.textContent = label;
+          b.setAttribute("aria-pressed", state[k] === val);
+          b.onclick = () => { state[k] = val; after(); };
+          box.appendChild(b);
+        });
+      }
+      const inCountry = (r) => state.country === "All" || r.country === state.country;
+      function pick(k) {
+        state.region = k;
+        detail();
+        map();
+        $("regionTitle").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      }
+
+      /* map */
+      const X0 = 23.2, Y0 = 15.1, S = 10;
+      function map() {
+        const svg = $("map"), sc = SC[state.sc];
+        svg.innerHTML = "";
+        svg.setAttribute("viewBox", "0 0 286 170");
+        $("mapwrap").classList.toggle("is-dark", state.sc === "dark");
+        D.shapes.forEach((s) => {
+          const country = CC[s.cc];
+          if (state.country !== "All" && country !== state.country) return;
+          const r = byKey.get(country + "|" + s.region + "|" + state.date);
+          const v = r ? r[sc.pred] : null;
+          const d = s.rings
+            .map((ring) => "M" + ring.map(([x, y]) => ((x - X0) * S).toFixed(1) + " " + ((Y0 - y) * S).toFixed(1)).join("L") + "Z")
+            .join("");
+          const p = el("path", { d, fill: ramp(v), tabindex: 0, role: "button", "aria-label": `${s.region}, ${country}: ${pct(v)} forecast in crisis` });
+          if (state.region === country + "|" + s.region) p.classList.add("sel");
+          p.onmousemove = (e) => showTip(e, tipHtml(r, s.region, country));
+          p.onmouseleave = hideTip;
+          p.onclick = () => pick(country + "|" + s.region);
+          p.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(country + "|" + s.region); } };
+          svg.appendChild(p);
+        });
+        [["Ethiopia", 36.6, 9.6], ["Somalia", 45.2, 3.4], ["South Sudan", 27.6, 8.4]].forEach(([n, x, y]) => {
+          if (state.country === "All" || state.country === n)
+            svg.appendChild(el("text", { x: (x - X0) * S, y: (Y0 - y) * S, "font-weight": 600 }, n));
+        });
+      }
+      function tipHtml(r, region, country) {
+        if (!r) return `<b>${region}, ${country}</b><br>No forecast for this date`;
+        const sc = SC[state.sc];
+        return `<b>${region}, ${country}</b><br>${fmtDate(r.target_date)}, forecast with data to ${fmtDate(r.cutoff)}<br>` +
+          `Forecast in crisis: <b>${pct(r[sc.pred])}</b><br>` +
+          `Last assessment used: ${pct(r[sc.last])}` + (state.sc === "dark" ? " (12+ months old)" : "") + `<br>` +
+          `Observed: ${r.y_share3 == null ? "not yet known" : pct(r.y_share3)}`;
+      }
+
+      /* watch list */
+      function watch() {
+        const sc = SC[state.sc];
+        const rows = testRows.filter((r) => r.target_date === state.date && inCountry(r) && r[sc.pred] != null)
+          .sort((a, b) => b[sc.pred] - a[sc.pred]);
+        const future = state.date > lastObserved;
+        $("watchTitle").textContent = `${future ? "Forecast" : "Forecast made"} for ${fmtDate(state.date)}, highest first`;
+        $("watchSub").textContent = future
+          ? `Made with data up to ${fmtDate(rows[0]?.cutoff || state.date)}. The outcome is not known yet: treat this as a watch list.`
+          : `Made with data up to ${fmtDate(rows[0]?.cutoff || state.date)}. ` +
+            (rows.some((r) => r.y_share3 != null) ? "The outcome is known; compare in the region detail." : "FEWS NET published no assessment for this date.");
+        $("watch").innerHTML = rows.slice(0, 9).map((r) => {
+          const ch = r[sc.last] == null ? null : r[sc.pred] - r[sc.last];
+          const arrow = ch == null ? "–" : ch > 0.05 ? `▲ ${Math.round(ch * 100)} pts` : ch < -0.05 ? `▼ ${Math.round(-ch * 100)} pts` : "steady";
+          return `<li data-k="${key(r)}" tabindex="0"><span>${r.region} <span class="c">${r.country}</span></span>
+            <span class="n">${pct(r[sc.pred])}</span><span class="ch">${arrow}</span></li>`;
+        }).join("");
+        $("watch").querySelectorAll("li").forEach((li) => {
+          li.onclick = () => pick(li.dataset.k);
+          li.onkeydown = (e) => { if (e.key === "Enter") pick(li.dataset.k); };
+        });
+        $("ramp").innerHTML = `<span>0% of region in crisis</span><i style="background:${rampCss}"></i><span>100%</span>
+          <span>· arrows compare with the last assessment the model could use</span>`;
+      }
+
+      /* scoreboard */
+      function scoreboard() {
+        const sc = SC[state.sc];
+        const M = state.country === "All" ? sc.metrics()
+          : (state.sc === "live" ? D.metrics.by_country : D.metrics.dark_by_country)[state.country];
+        const CI = D.metrics.mae_diff_ci;
+        const defs = state.sc === "live"
+          ? [
+              ["persistence", sc.baseName, "--muted", "Repeat the last known status. Hard to beat."],
+              ["full", sc.name, "--model", "Rainfall, prices and the last assessment."],
+              [HAS_NEWS ? "remote_news" : "remote", "No ground data at all", "--dark", "Rainfall, prices, conflict" + (HAS_NEWS ? ", news." : ".")],
+              ["fews", "FEWS NET analysts", "--fews", "Human experts with field teams."],
+            ]
+          : [
+              ["persistence_dark", sc.baseName, "--muted", "What you are left with when monitoring stops."],
+              [darkKey, sc.name, "--model", "Year-old assessment plus rainfall, prices, conflict" + (HAS_NEWS ? " and news." : ".")],
+              ["dark", "Without conflict or news", "--dark", "Year-old assessment plus rainfall and prices."],
+            ];
+        $("score").innerHTML = defs.map(([k, name, col, d]) => {
+          const m = M[k];
+          if (!m) return "";
+          return `<div><div class="k"><i class="dot" style="background:var(${col})"></i>${name}</div>
+            <div class="v">${pct(m.accuracy)}</div>
+            <div class="d">right crisis / no-crisis calls, ${m.n} cases</div>
+            <div class="d"><b>${m.onsets_caught} of ${m.onsets}</b> new crises foreseen</div>
+            <div class="d">average error ${Math.round(m.mae * 100)} points</div>
+            <div class="x">${d}</div></div>`;
+        }).join("");
+        $("scoreTitle").textContent = state.sc === "live" ? "How accurate is it while monitoring works?" : "How accurate is it once monitoring stops?";
+        $("scoreSub").textContent =
+          `Every assessment from ${fmtDate(D.test_from)} to ${fmtDate(lastObserved)}` +
+          (state.country === "All" ? " in 39 regions." : ` in ${state.country}.`) +
+          ` For each date the model was retrained using only outcomes known at the time.` +
+          (state.sc === "dark" ? " In this scenario the newest assessment it may use is at least 12 months older than the data cutoff, and it is trained only on outcomes known by then." : "");
+        const ci = (k) => CI[k] ? ` (difference ${CI[k].diff > 0 ? "+" : ""}${Math.round(CI[k].diff * 100)} points, 95% range ${Math.round(CI[k].lo * 100)} to ${Math.round(CI[k].hi * 100)})` : "";
+        if (state.sc === "live") {
+          const p = M.persistence, f = M.full, w = M.fews;
+          $("scoreNote").innerHTML =
+            `<b>Honest reading:</b> while a recent assessment exists, the tool does not beat simply repeating it ` +
+            `(${pct(f.accuracy)} against ${pct(p.accuracy)}${state.country === "All" ? ci("full") : ""}). Food crises persist, so that baseline is strong. ` +
+            `Its value is turning points: it foresaw ${f.onsets_caught} of ${f.onsets} new crises, the baseline none, and FEWS NET analysts ${w.onsets_caught} of ${w.onsets}. ` +
+            `Where monitoring works, keep the analysts.`;
+        } else {
+          const p = M.persistence_dark, f = M[darkKey];
+          $("scoreNote").innerHTML =
+            `<b>Honest reading:</b> once the newest assessment is a year old, the tool and the old assessment have about the same average error` +
+            `${state.country === "All" ? ci(darkKey) : ""}, but they fail differently. Repeating the old assessment cannot foresee any change. ` +
+            `The tool foresaw <b>${f.onsets_caught} of ${f.onsets}</b> new crises and ${f.recoveries_caught} of ${f.recoveries} recoveries, ` +
+            `and when it calls a crisis it is right ${pct(f.precision)} of the time (old assessment: ${pct(p.precision)}). ` +
+            `It misses more existing crises (${pct(f.recall)} found against ${pct(p.recall)}), so it should flag regions for a check, not replace one.`;
+        }
+      }
+
+      /* region detail */
+      function axisChart(svg, { W, H, x0, x1, y0, y1, yTicks, yFmt, ref }) {
+        svg.innerHTML = "";
+        svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+        svg.setAttribute("width", "100%");
+        const m = { l: 44, r: 12, t: 10, b: 24 };
+        const X = (v) => m.l + ((v - x0) / (x1 - x0)) * (W - m.l - m.r),
+          Y = (v) => H - m.b - ((v - y0) / (y1 - y0)) * (H - m.t - m.b);
+        yTicks.forEach((t) => {
+          svg.appendChild(el("line", { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), stroke: css("--grid") }));
+          svg.appendChild(el("text", { x: m.l - 6, y: Y(t) + 4, "text-anchor": "end" }, yFmt(t)));
+        });
+        for (let yr = Math.ceil(x0); yr <= x1; yr++)
+          if (x1 - x0 < 8 || yr % 2 === 0) svg.appendChild(el("text", { x: X(yr), y: H - 6, "text-anchor": "middle" }, yr));
+        if (ref != null)
+          svg.appendChild(el("line", { x1: m.l, x2: W - m.r, y1: Y(ref), y2: Y(ref), stroke: css("--muted"), "stroke-dasharray": "4 4" }));
+        return { X, Y, m };
+      }
+      function pathD(pts, X, Y, maxGap) {
+        let d = "", prev = null;
+        pts.forEach((p) => {
+          d += (prev == null || p[0] - prev > maxGap ? "M" : "L") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1);
+          prev = p[0];
+        });
+        return d;
+      }
+      function regionList() {
+        const seen = new Map();
+        D.rows.forEach((r) => { if (inCountry(r)) seen.set(key(r), r); });
+        return [...seen.values()].sort((a, b) => a.country.localeCompare(b.country) || a.region.localeCompare(b.region));
+      }
+      function detail() {
+        const regs = regionList();
+        if (!regs.some((r) => key(r) === state.region)) {
+          const top = testRows.filter((r) => r.target_date === state.date && inCountry(r)).sort((a, b) => b[SC[state.sc].pred] - a[SC[state.sc].pred])[0];
+          state.region = top ? key(top) : key(regs[0]);
+        }
+        const sel = $("regionSel");
+        sel.innerHTML = regs.map((r) => `<option value="${key(r)}">${r.region}, ${r.country}</option>`).join("");
+        sel.value = state.region;
+        sel.onchange = () => pick(sel.value);
+        const [country, region] = state.region.split("|");
+        $("regionTitle").textContent = `${region}, ${country}`;
+        const sc = SC[state.sc];
+        const rows = D.rows.filter((r) => r.country === country && r.region === region && r.target_date >= "2016-01")
+          .sort((a, b) => a.target_date.localeCompare(b.target_date));
+        const svg = $("line"), W = 1100, H = 260, x0 = 2016, x1 = 2027.4;
+        const { X, Y, m } = axisChart(svg, { W, H, x0, x1, y0: 0, y1: 1, yTicks: [0, 0.25, 0.5, 0.75, 1], yFmt: pct, ref: 0.5 });
+        if (gapDates.length) {
+          const a = tnum(gapDates[0]) - 0.15, b = tnum(gapDates[gapDates.length - 1]) + 0.15;
+          svg.appendChild(el("rect", { x: X(a), y: m.t, width: X(b) - X(a), height: H - m.t - m.b, fill: css("--grid"), opacity: 0.8 }));
+          svg.appendChild(el("text", { x: (X(a) + X(b)) / 2, y: m.t + 14, "text-anchor": "middle" }, "no assessments"));
+        }
+        const series = state.sc === "live"
+          ? [["fews_proj_share3", "--fews", "FEWS NET analysts' projection"], [sc.pred, "--model", "This tool, 4 months ahead"], ["y_share3", "--obs", "Observed (FEWS NET)"]]
+          : [[sc.base, "--muted", "Year-old assessment repeated"], [sc.pred, "--model", "This tool in the dark, 4 months ahead"], ["y_share3", "--obs", "Observed (FEWS NET)"]];
+        $("lineLegend").innerHTML = series.map(([, c, n]) => `<span><i class="dot" style="background:var(${c})"></i>${n}</span>`).join("");
+        series.forEach(([k, col]) => {
+          const pts = rows.filter((r) => r[k] != null && (k === "y_share3" || r.target_date >= D.test_from)).map((r) => [tnum(r.target_date), r[k]]);
+          svg.appendChild(el("path", { d: pathD(pts, X, Y, 0.55), fill: "none", stroke: css(col), "stroke-width": k === "y_share3" ? 2.5 : 2, "stroke-linejoin": "round" }));
+          pts.forEach((p) => svg.appendChild(el("circle", { cx: X(p[0]), cy: Y(p[1]), r: k === "y_share3" ? 3.5 : 3, fill: css(col), stroke: css("--surface"), "stroke-width": 1.5 })));
+        });
+        const cross = el("line", { y1: m.t, y2: H - m.b, stroke: css("--muted"), opacity: 0 });
+        svg.appendChild(cross);
+        const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" });
+        hit.onmousemove = (e) => {
+          const b = svg.getBoundingClientRect(), xv = x0 + ((((e.clientX - b.left) / b.width) * W - m.l) / (W - m.l - m.r)) * (x1 - x0);
+          const r = rows.reduce((a, c) => (Math.abs(tnum(c.target_date) - xv) < Math.abs(tnum(a.target_date) - xv) ? c : a));
+          cross.setAttribute("x1", X(tnum(r.target_date)));
+          cross.setAttribute("x2", X(tnum(r.target_date)));
+          cross.setAttribute("opacity", 1);
+          showTip(e, `<b>${fmtDate(r.target_date)}</b><br>Observed: ${r.y_share3 == null ? "none" : pct(r.y_share3)}` +
+            (r.target_date >= D.test_from ? series.slice(0, 2).map(([k, , n]) => `<br>${n}: ${pct(r[k])}`).join("") : ""));
+        };
+        hit.onmouseleave = () => { hideTip(); cross.setAttribute("opacity", 0); };
+        svg.appendChild(hit);
+
+        const mo = D.monthly.filter((r) => r.country === country && r.region === region && r.date >= "2016-01");
+        const box = $("smalls");
+        box.innerHTML = "";
+        const add = (title, note, pts, o) => {
+          const d = document.createElement("div");
+          d.innerHTML = `<h3>${title}</h3><div class="sub" style="font-size:12.5px">${note}</div>`;
+          const s = document.createElementNS(NS, "svg");
+          d.appendChild(s);
+          box.appendChild(d);
+          if (!pts.length) { d.insertAdjacentHTML("beforeend", `<p class="sub">${o.empty}</p>`); return; }
+          small(s, pts, { ...o, x0, x1 });
+        };
+        add("Rainfall, last 3 months", "% of the long-term normal, CHIRPS satellite",
+          mo.filter((r) => r.r3q != null).map((r) => [tnum(r.date), r.r3q, r.date]),
+          { y0: 0, y1: 250, ticks: [0, 100, 200], ref: 100, fmt: (v) => Math.round(v) + "%", col: "--obs" });
+        const pr = mo.filter((r) => r.price_yoy != null).map((r) => [tnum(r.date), (Math.exp(r.price_yoy) - 1) * 100, r.date]);
+        const cap = Math.min(400, Math.max(100, Math.ceil(Math.max(0, ...pr.map((p) => p[1])) / 100) * 100));
+        add("Cereal prices", "% change on a year earlier, WFP markets",
+          pr.map((p) => [p[0], Math.min(p[1], cap), p[2], p[1]]),
+          { y0: -50, y1: cap, ticks: [0, 100, 200, 300, 400].filter((t) => t <= cap), ref: 0, fmt: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%", col: "--model", empty: "No WFP market here. The model uses the national median." });
+        const cf = mo.filter((r) => r.conf_events != null).map((r) => [tnum(r.date), r.conf_events, r.date]);
+        const cmax = Math.max(5, ...cf.map((p) => p[1]));
+        add("Conflict events per month", `UCDP organised violence, to ${fmtDate(D.conflict_through)}`, cf,
+          { y0: 0, y1: cmax, ticks: [0, Math.round(cmax / 2), Math.round(cmax)], fmt: (v) => Math.round(v), col: "--dark", bars: true });
+        if (HAS_NEWS) {
+          const nw = mo.filter((r) => r.news_food != null).map((r) => [tnum(r.date), r.news_food, r.date]);
+          const nmax = Math.max(5, ...nw.map((p) => p[1]));
+          add("Hunger and drought news", "Articles per month, GDELT, all languages", nw,
+            { y0: 0, y1: nmax, ticks: [0, Math.round(nmax / 2), Math.round(nmax)], fmt: (v) => Math.round(v), col: "--fews" });
+        }
+      }
+      function small(svg, pts, o) {
+        const W = 360, H = 150;
+        const { X, Y, m } = axisChart(svg, { W, H, x0: o.x0, x1: o.x1, y0: o.y0, y1: o.y1, yTicks: o.ticks, yFmt: o.fmt, ref: o.ref });
+        const cl = pts.map((p) => [p[0], Math.max(o.y0, Math.min(o.y1, p[1])), p[2], p[3] ?? p[1]]);
+        if (o.bars) {
+          const bw = Math.max(1, (W - m.l - m.r) / ((o.x1 - o.x0) * 12) - 0.6);
+          cl.forEach((p) => p[1] > 0 && svg.appendChild(el("rect", { x: X(p[0]), y: Y(p[1]), width: bw, height: Y(o.y0) - Y(p[1]), fill: css(o.col) })));
+        } else {
+          svg.appendChild(el("path", { d: pathD(cl, X, Y, 0.3), fill: "none", stroke: css(o.col), "stroke-width": 1.8, "stroke-linejoin": "round" }));
+        }
+        const dot = el("circle", { r: 4, fill: css(o.col), stroke: css("--surface"), "stroke-width": 2, opacity: 0 });
+        svg.appendChild(dot);
+        const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, fill: "transparent" });
+        hit.onmousemove = (e) => {
+          const b = svg.getBoundingClientRect(), xv = o.x0 + ((((e.clientX - b.left) / b.width) * W - m.l) / (W - m.l - m.r)) * (o.x1 - o.x0);
+          const p = cl.reduce((a, c) => (Math.abs(c[0] - xv) < Math.abs(a[0] - xv) ? c : a));
+          dot.setAttribute("cx", X(p[0]));
+          dot.setAttribute("cy", Y(p[1]));
+          dot.setAttribute("opacity", 1);
+          showTip(e, `<b>${fmtDate(p[2])}</b><br>${o.fmt(p[3])}`);
+        };
+        hit.onmouseleave = () => { hideTip(); dot.setAttribute("opacity", 0); };
+        svg.appendChild(hit);
+      }
+
+      /* heatmap */
+      function heat() {
+        const regs = regionList(), svg = $("heat"), sc = SC[state.sc];
+        svg.innerHTML = "";
+        const L = 190, T = 46, cw = 50, ch = 22, W = L + dates.length * cw + 10;
+        let y = T;
+        const pos = [];
+        regs.forEach((r, i) => { if (i && regs[i - 1].country !== r.country) y += 12; pos.push(y); y += ch; });
+        svg.setAttribute("width", W);
+        svg.setAttribute("height", y + 8);
+        svg.setAttribute("viewBox", `0 0 ${W} ${y + 8}`);
+        const defs = el("defs"), pat = el("pattern", { id: "hatch", width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" });
+        pat.appendChild(el("rect", { width: 6, height: 6, fill: css("--surface") }));
+        pat.appendChild(el("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: css("--muted"), "stroke-width": 1.5 }));
+        defs.appendChild(pat);
+        svg.appendChild(defs);
+        dates.forEach((d, j) => {
+          const x = L + j * cw + cw / 2;
+          svg.appendChild(el("text", { x, y: 18, "text-anchor": "middle" }, MONTHS[+d.slice(5, 7) - 1]));
+          svg.appendChild(el("text", { x, y: 32, "text-anchor": "middle" }, d.slice(0, 4)));
+          if (futureDates.includes(d)) svg.appendChild(el("text", { x, y: 44, "text-anchor": "middle", style: "font-size:9.5px" }, "forecast"));
+        });
+        const over = css("--model"), under = css("--obs"), mid = css("--grid");
+        regs.forEach((r, i) => {
+          const row = el("g", { style: "cursor:pointer" });
+          row.onclick = () => pick(key(r));
+          row.appendChild(el("text", { x: L - 8, y: pos[i] + 15, "text-anchor": "end", style: "fill:var(--ink)" },
+            (state.country === "All" ? r.country.replace("South Sudan", "S. Sudan") + ", " : "") + r.region));
+          dates.forEach((d, j) => {
+            const c = byKey.get(key(r) + "|" + d);
+            if (!c) return;
+            let v, fill;
+            if (state.mode === "observed") v = c.y_share3;
+            else if (state.mode === "forecast") v = c[sc.pred];
+            else v = c.y_share3 == null || c[sc.pred] == null ? null : c[sc.pred] - c.y_share3;
+            if (v == null) fill = "url(#hatch)";
+            else if (state.mode === "error") fill = `color-mix(in oklab, ${v > 0 ? over : under} ${Math.round(Math.min(1, Math.abs(v)) * 100)}%, ${mid})`;
+            else fill = ramp(v);
+            const rect = el("rect", { x: L + j * cw + 1, y: pos[i] + 1, width: cw - 2, height: ch - 2, rx: 2, fill });
+            rect.onmousemove = (e) => showTip(e, tipHtml(c, r.region, r.country));
+            rect.onmouseleave = hideTip;
+            row.appendChild(rect);
+          });
+          svg.appendChild(row);
+        });
+        const r =
+          state.mode === "error"
+            ? `<span>forecast too low</span><i class="dot" style="width:120px;height:9px;border-radius:2px;background:linear-gradient(90deg,var(--obs),var(--grid),var(--model))"></i><span>too high</span>`
+            : `<span>0% in crisis</span><i class="dot" style="width:120px;height:9px;border-radius:2px;background:${rampCss}"></i><span>100%</span>`;
+        $("heatLegend").innerHTML = r +
+          `<span><svg width="14" height="10"><rect width="14" height="10" fill="url(#hatch)"/></svg>no assessment` +
+          (gapDates.length ? ` (${gapDates.map(fmtDate).join(", ")}: the funding stop)` : "") + `</span>`;
+      }
+
+      /* misses and drivers */
+      function statics() {
+        const sc = SC[state.sc];
+        const miss = testRows.filter((r) => r.y_share3 != null && r[sc.pred] != null && inCountry(r))
+          .map((r) => ({ r, e: Math.abs(r[sc.pred] - r.y_share3) })).sort((a, b) => b.e - a.e).slice(0, 9);
+        $("missTable").innerHTML =
+          `<thead><tr><th>Region</th><th>Date</th><th class="num">Observed</th><th class="num">Forecast</th><th class="num">${state.sc === "live" ? "FEWS NET" : "Old assessment"}</th></tr></thead><tbody>` +
+          miss.map(({ r }) => `<tr><td>${r.region}, ${r.country}</td><td>${fmtDate(r.target_date)}</td><td class="num">${pct(r.y_share3)}</td>
+            <td class="num">${pct(r[sc.pred])}</td><td class="num">${pct(state.sc === "live" ? r.fews_proj_share3 : r[sc.base])}</td></tr>`).join("") + "</tbody>";
+        const impKey = state.sc === "live" ? "full" : (D.importance[darkKey] ? darkKey : "full");
+        const imp = D.importance[impKey].filter((i) => i.importance > 0).slice(0, 8), mx = imp[0]?.importance || 1;
+        $("impSub").textContent = `How much the error grows when each input is scrambled, for the ${state.sc === "live" ? "standard" : "dark-scenario"} model. Longer bar means it depends on it more.`;
+        $("imp").innerHTML = imp.map((i) => `<div style="display:grid;grid-template-columns:minmax(0,250px) 1fr;gap:10px;align-items:center;font-size:13px;margin:6px 0">
+          <span>${i.feature}</span><span><span class="bar" style="width:${Math.max(1.5, (i.importance / mx) * 100)}%"></span></span></div>`).join("");
+        const CI = D.metrics.mae_diff_ci;
+        const lessons = [
+          "The last ground assessment matters most. When it is recent, nothing else adds much.",
+          `Conflict data from UCDP did not improve accuracy${CI.dark_conf_vs_dark ? ` (average error ${CI.dark_conf_vs_dark.diff >= 0 ? "+" : ""}${Math.round(CI.dark_conf_vs_dark.diff * 100)} points versus without it)` : ""}. Large Somali misses remain.`,
+        ];
+        if (HAS_NEWS && CI.dark_news_vs_dark)
+          lessons.push(`Adding hunger news from GDELT changed the dark-scenario error by ${CI.dark_news_vs_dark.diff >= 0 ? "+" : ""}${Math.round(CI.dark_news_vs_dark.diff * 100)} points (95% range ${Math.round(CI.dark_news_vs_dark.lo * 100)} to ${Math.round(CI.dark_news_vs_dark.hi * 100)}).`);
+        lessons.push(`No assessments exist for ${gapDates.map(fmtDate).join(" and ") || "some periods"}, the months of the 2025 funding stop.`);
+        $("lessons").innerHTML = lessons.map((t) => `<li>${t}</li>`).join("");
+        $("foot").innerHTML =
+          `Data: FEWS NET Data Warehouse (IPC classifications); WFP food prices and CHIRPS rainfall indicators via HDX; UCDP GED 26.1 and Candidate Events to ${fmtDate(D.conflict_through)}; ` +
+          (HAS_NEWS ? "GDELT DOC 2.0 news volumes; " : "") +
+          `region outlines from geoBoundaries. Model: gradient-boosted trees, ${D.train_rows} training cases before ${fmtDate(D.test_from)}, ${D.test_rows} test cases. ` +
+          `Built ${D.generated}. Student prototype for a university course, not for operational use. All numbers can be checked with <code>python3 src/verify.py</code>.`;
+      }
+
+      function render() {
+        $("scLive").setAttribute("aria-pressed", state.sc === "live");
+        $("scDark").setAttribute("aria-pressed", state.sc === "dark");
+        seg("countrySeg", COUNTRIES.map((c) => [c, c]), "country", render);
+        seg("modeSeg", [["observed", "What happened"], ["forecast", "What the tool forecast"], ["error", "Forecast error"]], "mode", render);
+        const ds = $("dateSel");
+        ds.innerHTML = [...dates].reverse().map((d) => `<option value="${d}">${fmtDate(d)}${d > lastObserved ? " (ahead)" : ""}</option>`).join("");
+        ds.value = state.date;
+        ds.onchange = () => { state.date = ds.value; render(); };
+        map();
+        watch();
+        scoreboard();
+        detail();
+        heat();
+        statics();
+      }
+      $("scLive").onclick = () => { state.sc = "live"; render(); };
+      $("scDark").onclick = () => { state.sc = "dark"; render(); };
+      render();
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+    </script>
+  </body>
+</html>
