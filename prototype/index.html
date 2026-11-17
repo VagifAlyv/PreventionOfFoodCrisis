@@ -482,8 +482,7 @@
         after its funding stopped. This tool forecasts, four months ahead, how
         much of each region in Ethiopia, Somalia and South Sudan will be in
         crisis (IPC phase 3 or worse), using only data nobody has to go and
-        collect: satellite rainfall, market prices, conflict records and local
-        news. Every score below is from real data the model never saw while
+        collect: satellite rainfall, market prices and conflict records. Every score below is from real data the model never saw while
         training.
       </p>
 
@@ -585,7 +584,7 @@
       const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const fmtDate = (s) => MONTHS[+s.slice(5, 7) - 1] + " " + s.slice(0, 4);
       const tnum = (s) => +s.slice(0, 4) + (+s.slice(5, 7) - 1) / 12;
-      const HAS_NEWS = D.rows.some((r) => r.pred_dark_news != null);
+      const HAS_NEWS = D.rows.some((r) => r.news_food_share3 != null);
 
       /* The forecast each scenario shows. Chosen before results were seen (see train_model.py). */
       const SC = {
@@ -735,7 +734,7 @@
           : [
               ["persistence_dark", sc.baseName, "--muted", "What you are left with when monitoring stops."],
               [darkKey, sc.name, "--model", "Year-old assessment plus rainfall, prices, conflict" + (HAS_NEWS ? " and news." : ".")],
-              ["dark", "Without conflict or news", "--dark", "Year-old assessment plus rainfall and prices."],
+              ["dark", HAS_NEWS ? "Without conflict or news" : "Without conflict data", "--dark", "Year-old assessment plus rainfall and prices."],
             ];
         $("score").innerHTML = defs.map(([k, name, col, d]) => {
           const m = M[k];

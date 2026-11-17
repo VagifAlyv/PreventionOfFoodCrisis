@@ -106,14 +106,16 @@ def main():
     df["t"] = pd.PeriodIndex(df.target_date, freq="M")
     df["k"] = pd.PeriodIndex(df.cutoff, freq="M")
     labelled = df.dropna(subset=["y_share3"])
+    has_news = df[NEWS].notna().any().any()
+    variants = {v: f for v, f in VARIANTS.items() if has_news or not set(f) & set(NEWS)}
 
-    for v in VARIANTS:
+    for v in VARIANTS:  # columns always exist; news ones stay empty until news data is downloaded
         df["pred_" + v] = np.nan
     for T in sorted(df[df.target_date >= TEST_FROM].t.unique()):
         idx = df.index[df.t == T]
         k = df.loc[idx[0], "k"]
         train = labelled[labelled.t <= k]  # outcomes known at the cutoff
-        for v, feats in VARIANTS.items():
+        for v, feats in variants.items():
             tr = train
             if v.startswith("dark"):  # the dark model can only learn from outcomes known DARK months earlier
                 tr = labelled[labelled.t <= k - 12]
@@ -129,6 +131,9 @@ def main():
             "remote_news": "pred_remote_news", "fews": "fews_proj_share3"}
     dark_cols = {"persistence_dark": "pred_persist_dark", "dark": "pred_dark", "dark_conf": "pred_dark_conf",
                  "dark_news": "pred_dark_news"}
+    if not has_news:
+        cols = {k: c for k, c in cols.items() if "news" not in k}
+        dark_cols = {k: c for k, c in dark_cols.items() if "news" not in k}
     metrics = {"all": {k: score(test, c) for k, c in cols.items()}}
     metrics["dark"] = {k: score(test, c, "last_share3_dark") for k, c in dark_cols.items()}
     common = test.dropna(subset=list(cols.values()))
@@ -145,6 +150,7 @@ def main():
              ("dark_conf", "pred_dark_conf", "pred_persist_dark"), ("dark_conf_vs_dark", "pred_dark_conf", "pred_dark"),
              ("full_news", "pred_full_news", "pred_persist"), ("remote_news_vs_remote", "pred_remote_news", "pred_remote"),
              ("dark_news", "pred_dark_news", "pred_persist_dark"), ("dark_news_vs_dark", "pred_dark_news", "pred_dark")]
+    pairs = [p for p in pairs if has_news or "news" not in p[0]]
     metrics["mae_diff_ci"] = {}
     for name, a, b in pairs:
         d = test.dropna(subset=[a, b])
@@ -158,8 +164,11 @@ def main():
     # what the final model leans on
     final_train = labelled[labelled.target_date < TEST_FROM]
     imp = {}
-    for name, feats in [("full", SAT + IPC), ("full_conf", SAT + IPC + CONF),
-                        ("dark_news", SAT + IPC_DARK + CONF + NEWS), ("satellite", SAT)]:
+    imp_sets = [("full", SAT + IPC), ("full_conf", SAT + IPC + CONF),
+                ("dark_conf", SAT + IPC_DARK + CONF), ("satellite", SAT)]
+    if has_news:
+        imp_sets.append(("dark_news", SAT + IPC_DARK + CONF + NEWS))
+    for name, feats in imp_sets:
         m = model().fit(final_train[feats], final_train.y_share3)
         pi = permutation_importance(m, test[feats], test.y_share3, n_repeats=20, random_state=0,
                                     scoring="neg_mean_absolute_error")

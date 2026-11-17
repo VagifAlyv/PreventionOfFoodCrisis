@@ -36,18 +36,6 @@
    "recoveries": 26,
    "recoveries_caught": 11
   },
-  "full_news": {
-   "n": 468,
-   "mae": 0.18,
-   "accuracy": 0.812,
-   "precision": 0.896,
-   "recall": 0.782,
-   "f1": 0.835,
-   "onsets": 40,
-   "onsets_caught": 6,
-   "recoveries": 26,
-   "recoveries_caught": 11
-  },
   "satellite": {
    "n": 468,
    "mae": 0.32,
@@ -61,18 +49,6 @@
    "recoveries_caught": 20
   },
   "remote": {
-   "n": 468,
-   "mae": 0.317,
-   "accuracy": 0.637,
-   "precision": 0.876,
-   "recall": 0.47,
-   "f1": 0.612,
-   "onsets": 40,
-   "onsets_caught": 7,
-   "recoveries": 26,
-   "recoveries_caught": 20
-  },
-  "remote_news": {
    "n": 468,
    "mae": 0.317,
    "accuracy": 0.637,
@@ -133,18 +109,6 @@
    "onsets_caught": 31,
    "recoveries": 53,
    "recoveries_caught": 46
-  },
-  "dark_news": {
-   "n": 468,
-   "mae": 0.272,
-   "accuracy": 0.667,
-   "precision": 0.886,
-   "recall": 0.519,
-   "f1": 0.655,
-   "onsets": 97,
-   "onsets_caught": 31,
-   "recoveries": 53,
-   "recoveries_caught": 46
   }
  },
  "common": {
@@ -184,18 +148,6 @@
    "recoveries": 24,
    "recoveries_caught": 10
   },
-  "full_news": {
-   "n": 429,
-   "mae": 0.173,
-   "accuracy": 0.823,
-   "precision": 0.902,
-   "recall": 0.799,
-   "f1": 0.847,
-   "onsets": 30,
-   "onsets_caught": 4,
-   "recoveries": 24,
-   "recoveries_caught": 10
-  },
   "satellite": {
    "n": 429,
    "mae": 0.32,
@@ -209,18 +161,6 @@
    "recoveries_caught": 19
   },
   "remote": {
-   "n": 429,
-   "mae": 0.316,
-   "accuracy": 0.646,
-   "precision": 0.894,
-   "recall": 0.481,
-   "f1": 0.626,
-   "onsets": 30,
-   "onsets_caught": 6,
-   "recoveries": 24,
-   "recoveries_caught": 19
-  },
-  "remote_news": {
    "n": 429,
    "mae": 0.316,
    "accuracy": 0.646,
@@ -283,18 +223,6 @@
     "recoveries": 2,
     "recoveries_caught": 0
    },
-   "full_news": {
-    "n": 132,
-    "mae": 0.111,
-    "accuracy": 0.917,
-    "precision": 0.719,
-    "recall": 0.92,
-    "f1": 0.807,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
    "satellite": {
     "n": 132,
     "mae": 0.248,
@@ -308,18 +236,6 @@
     "recoveries_caught": 2
    },
    "remote": {
-    "n": 132,
-    "mae": 0.232,
-    "accuracy": 0.788,
-    "precision": 0.333,
-    "recall": 0.12,
-    "f1": 0.176,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 2
-   },
-   "remote_news": {
     "n": 132,
     "mae": 0.232,
     "accuracy": 0.788,
@@ -381,18 +297,6 @@
     "recoveries": 22,
     "recoveries_caught": 11
    },
-   "full_news": {
-    "n": 216,
-    "mae": 0.265,
-    "accuracy": 0.676,
-    "precision": 0.861,
-    "recall": 0.608,
-    "f1": 0.713,
-    "onsets": 36,
-    "onsets_caught": 5,
-    "recoveries": 22,
-    "recoveries_caught": 11
-   },
    "satellite": {
     "n": 216,
     "mae": 0.359,
@@ -406,18 +310,6 @@
     "recoveries_caught": 18
    },
    "remote": {
-    "n": 216,
-    "mae": 0.35,
-    "accuracy": 0.486,
-    "precision": 0.808,
-    "recall": 0.294,
-    "f1": 0.431,
-    "onsets": 36,
-    "onsets_caught": 4,
-    "recoveries": 22,
-    "recoveries_caught": 18
-   },
-   "remote_news": {
     "n": 216,
     "mae": 0.35,
     "accuracy": 0.486,
@@ -479,18 +371,6 @@
     "recoveries": 2,
     "recoveries_caught": 0
    },
-   "full_news": {
-    "n": 120,
-    "mae": 0.104,
-    "accuracy": 0.942,
-    "precision": 0.974,
-    "recall": 0.966,
-    "f1": 0.97,
-    "onsets": 3,
-    "onsets_caught": 1,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
    "satellite": {
     "n": 120,
     "mae": 0.331,
@@ -504,18 +384,6 @@
     "recoveries_caught": 0
    },
    "remote": {
-    "n": 120,
-    "mae": 0.352,
-    "accuracy": 0.742,
-    "precision": 0.967,
-    "recall": 0.761,
-    "f1": 0.852,
-    "onsets": 3,
-    "onsets_caught": 3,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "remote_news": {
     "n": 120,
     "mae": 0.352,
     "accuracy": 0.742,
@@ -578,18 +446,6 @@
     "onsets_caught": 0,
     "recoveries": 6,
     "recoveries_caught": 5
-   },
-   "dark_news": {
-    "n": 132,
-    "mae": 0.203,
-    "accuracy": 0.765,
-    "precision": 0.2,
-    "recall": 0.08,
-    "f1": 0.114,
-    "onsets": 3,
-    "onsets_caught": 0,
-    "recoveries": 6,
-    "recoveries_caught": 5
    }
   },
   "Somalia": {
@@ -618,18 +474,6 @@
     "recoveries_caught": 40
    },
    "dark_conf": {
-    "n": 216,
-    "mae": 0.364,
-    "accuracy": 0.477,
-    "precision": 0.826,
-    "recall": 0.266,
-    "f1": 0.402,
-    "onsets": 91,
-    "onsets_caught": 28,
-    "recoveries": 44,
-    "recoveries_caught": 41
-   },
-   "dark_news": {
     "n": 216,
     "mae": 0.364,
     "accuracy": 0.477,
@@ -678,18 +522,6 @@
     "onsets_caught": 3,
     "recoveries": 3,
     "recoveries_caught": 0
-   },
-   "dark_news": {
-    "n": 120,
-    "mae": 0.184,
-    "accuracy": 0.9,
-    "precision": 0.973,
-    "recall": 0.923,
-    "f1": 0.947,
-    "onsets": 3,
-    "onsets_caught": 3,
-    "recoveries": 3,
-    "recoveries_caught": 0
    }
   }
  },
@@ -720,26 +552,6 @@
    "hi": 0.052
   },
   "dark_conf_vs_dark": {
-   "diff": 0.007,
-   "lo": 0.001,
-   "hi": 0.013
-  },
-  "full_news": {
-   "diff": 0.043,
-   "lo": 0.025,
-   "hi": 0.061
-  },
-  "remote_news_vs_remote": {
-   "diff": 0.0,
-   "lo": 0.0,
-   "hi": 0.0
-  },
-  "dark_news": {
-   "diff": 0.005,
-   "lo": -0.044,
-   "hi": 0.057
-  },
-  "dark_news_vs_dark": {
    "diff": 0.007,
    "lo": 0.001,
    "hi": 0.013
