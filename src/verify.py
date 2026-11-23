@@ -134,6 +134,9 @@ for var in ("r3q", "price_yoy"):
     got = {"n": int(len(d_)),
            "mae_timesfm": round(float((d_[f"tfm_{var}"] - d_[f"obs_{var}"]).abs().mean()), 4),
            "mae_last_value": round(float((d_[f"naive_{var}"] - d_[f"obs_{var}"]).abs().mean()), 4)}
+    if var == "price_yoy":
+        got["n_national"] = int((d_.tfm_price_is_national == 1).sum())
+        got["n_national_test"] = int((test.tfm_price_is_national == 1).sum())
     check(f"driver check '{var}' recomputed from predictions.csv",
           got == metrics.get("driver_check", {}).get(var), f"got={got}")
 

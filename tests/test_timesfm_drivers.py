@@ -82,6 +82,18 @@ def test_driver_table_with_last_value_forecaster():
         assert (pd.PeriodIndex(ok, freq="M") <= pd.PeriodIndex(d.loc[ok.index, "cutoff"], freq="M")).all()
     # horizon = target - newest context month: rain 4; regional price 5; national prices 4
     assert sorted(seen) == [4, 4, 4, 4, 5]
+    assert afar.tfm_price_is_national == 0
+    assert d.loc[("Afar", "2019-06")].tfm_price_is_national == 1 and tig.tfm_price_is_national == 1
+
+
+def test_driver_table_falls_back_when_regional_series_fresh_but_short():
+    panel = pd.DataFrame({"cc": ["ET"], "region": ["Afar"], "target_date": ["2019-02"], "cutoff": ["2018-10"]})
+    rain = pd.DataFrame({"region": [], "date": pd.PeriodIndex([], freq="M"), "r3q": []})
+    preg = pd.DataFrame({"region": "Afar", "date": pd.period_range("2017-01", "2018-10", freq="M")})
+    preg["price_yoy"] = 1.0  # 22 months, ends at the cutoff: fresh but shorter than 24
+    pnat = pd.DataFrame({"date": pd.period_range("2010-01", "2018-10", freq="M"), "price_yoy": 5.0})
+    d = driver_table(panel, rain, preg, pnat, lambda c, h: [x[-1] for x in c]).iloc[0]
+    assert d.tfm_price_yoy == 5.0 and d.tfm_price_is_national == 1
 
 
 if __name__ == "__main__":

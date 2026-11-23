@@ -55,12 +55,16 @@ def driver_table(panel, rain, preg, pnat, forecast):
         for var, candidates, age in sources:
             row.update({f"tfm_{var}": np.nan, f"naive_{var}": np.nan, f"obs_{var}": np.nan,
                         f"ctx_end_{var}": None})
-            for s in candidates:
+            if var == "price_yoy":
+                row["tfm_price_is_national"] = np.nan
+            for i, s in enumerate(candidates):
                 if s is None:
                     continue
                 ctx, end = context(s, k, age)
                 if ctx is None:
                     continue
+                if var == "price_yoy":
+                    row["tfm_price_is_national"] = i  # candidates: 0 regional, 1 national
                 row[f"naive_{var}"] = ctx[-1]
                 row[f"obs_{var}"] = s.get(T, np.nan)
                 row[f"ctx_end_{var}"] = str(end)

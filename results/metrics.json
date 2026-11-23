@@ -759,7 +759,9 @@
   "price_yoy": {
    "n": 463,
    "mae_timesfm": 0.1388,
-   "mae_last_value": 0.1465
+   "mae_last_value": 0.1465,
+   "n_national": 182,
+   "n_national_test": 188
   }
  }
 }

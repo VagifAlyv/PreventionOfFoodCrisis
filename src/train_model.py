@@ -24,7 +24,7 @@ IPC_DARK = [f + "_dark" for f in IPC]
 CONF = ["conf_deaths3", "conf_events3", "conf_change"]
 NEWS = ["news_food_share3", "news_food_log3", "news_food_change"]
 TFM = ["tfm_r3q", "tfm_price_yoy"]  # TimesFM 2.5 forecasts of the drivers at the target month
-DRIVERS = ["tfm_r3q", "naive_r3q", "obs_r3q", "tfm_price_yoy", "naive_price_yoy", "obs_price_yoy"]
+DRIVERS = ["tfm_r3q", "naive_r3q", "obs_r3q", "tfm_price_yoy", "naive_price_yoy", "obs_price_yoy", "tfm_price_is_national"]
 # Fixed before looking at test results; every variant is reported, not just the best one.
 # name: (features, column holding the forecast)
 VARIANTS = {
@@ -183,6 +183,9 @@ def main():
             "n": int(len(d)),
             "mae_timesfm": round(float((d[f"tfm_{var}"] - d[f"obs_{var}"]).abs().mean()), 4),
             "mae_last_value": round(float((d[f"naive_{var}"] - d[f"obs_{var}"]).abs().mean()), 4)}
+    # rows where the regional price series was too short or stale and TimesFM used the national one
+    metrics["driver_check"]["price_yoy"]["n_national"] = int((d.tfm_price_is_national == 1).sum())
+    metrics["driver_check"]["price_yoy"]["n_national_test"] = int((test.tfm_price_is_national == 1).sum())
 
     # what the final model leans on
     final_train = labelled[labelled.target_date < TEST_FROM]

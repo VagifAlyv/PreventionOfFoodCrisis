@@ -36,7 +36,7 @@ python3 src/timesfm_drivers.py
 python3 src/train_model.py
 ```
 
-Needs Python with pandas, scikit-learn and matplotlib, plus `timesfm[torch]` for `timesfm_drivers.py`, which downloads the TimesFM 2.5 weights (925 MB) from Hugging Face on first run. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the 23 November 2026 snapshot used for the results. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
+Needs Python with pandas, scikit-learn and matplotlib, plus `timesfm[torch]` for `timesfm_drivers.py`, which downloads the TimesFM 2.5 weights (925 MB) from Hugging Face on first run. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the snapshots used for the results: Ethiopia from 23 November 2026, Somalia and South Sudan from 10 November 2026. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
 
 ## Check the numbers
 
@@ -101,9 +101,12 @@ The 95% ranges below come from a paired bootstrap over assessment dates, in `met
    So it is useful for flagging regions to check first, not for replacing an assessment.
 4. **Conflict data did not help.** Adding UCDP features changed the dark-scenario error by +0.8 points (95% range +0.2 to +1.5). The README's earlier guess that conflict data was the missing input is not supported.
 5. **Remote data alone cannot replace monitoring.** With no assessment at all, accuracy is 64%.
-6. **Google's TimesFM forecasting model did not help.** TimesFM 2.5 (zero-shot, no training) forecast each region's rainfall and cereal prices forward to the target month, and these forecasts were added as inputs. The variants were fixed before the results were seen.
+6. **Google's TimesFM forecasting model did not help, and with no ground data it made the forecast slightly worse.** TimesFM 2.5 (zero-shot, no training) forecast each region's rainfall and cereal prices forward to the target month, and these two forecasts were added as inputs. The variants were fixed before the results were seen.
+   - For 188 of the 479 test cases the price forecast used the national price series, because the region's own series had gaps or was shorter than 24 months.
    - As a forecast of the drivers themselves it works better than repeating the last value: average error 25.1 against 35.7 points of rainfall-as-%-of-normal (479 cases), and 0.139 against 0.147 for the 12-month log price change (463 cases). These are under `driver_check` in `metrics.json`.
    - It did not improve the crisis forecast. Against the same model without it, the average error changed by +0.1 points while monitoring works (95% range −0.5 to +0.7), +0.9 points in the dark (−0.1 to +1.8) and +0.6 points with no ground data (+0.1 to +1.1). In the dark it foresaw 26 of 98 new crises, against 31 without it.
+   - Against the baselines: +4.3 points versus repeating the last assessment (2.1 to 6.1), and +0.8 points versus the year-old assessment in the dark (−4.0 to +5.5).
+   - Only the forecast levels were tested. The design also listed "forecast minus last observed value" as an input; it was left out of the pre-registered variants and is not tested.
 
 ## How this differs from existing systems
 
