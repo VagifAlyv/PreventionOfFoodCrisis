@@ -90,6 +90,18 @@ w = cm[(cm.region == "Tigray") & cm.date.between("2020-08", "2020-10")]
 check("conflict feature uses only months up to the cutoff (Tigray, war began Nov 2020)",
       np.isclose(row.conf_events3, np.log1p(w.events.sum())) and w.events.sum() < 5)
 
+print("2c. TimesFM driver forecasts")
+drv = pd.read_csv(ROOT / "data/processed/timesfm_drivers.csv")
+check("one TimesFM driver row per panel row",
+      len(drv) == len(panel) and not drv.duplicated(["cc", "region", "target_date"]).any())
+for var in ("r3q", "price_yoy"):
+    d_ = drv.dropna(subset=[f"ctx_end_{var}"])
+    ends = pd.PeriodIndex(d_[f"ctx_end_{var}"], freq="M")
+    check(f"TimesFM {var} context never ends after the cutoff ({len(d_)} forecasts)",
+          len(d_) > 1000 and (ends <= pd.PeriodIndex(d_.cutoff, freq="M")).all())
+    check(f"every TimesFM {var} forecast has a last-value baseline",
+          d_[f"naive_{var}"].notna().all() and d_[f"tfm_{var}"].notna().all())
+
 print("3. sanity")
 check("no duplicate region/date rows", not panel.duplicated(["region", "target_date"]).any())
 for c in ["y_share3", "last_share3", "last_share3_dark", "fews_proj_share3"]:
@@ -104,16 +116,26 @@ check(f"test set: {len(test)} rows, all with forecasts", len(test) == metrics["a
 print("4. metrics reproduce")
 cols = {"persistence": "pred_persist", "full": "pred_full", "full_conf": "pred_full_conf",
         "satellite": "pred_sat", "remote": "pred_remote", "fews": "fews_proj_share3",
-        "full_news": "pred_full_news", "remote_news": "pred_remote_news"}
+        "full_news": "pred_full_news", "remote_news": "pred_remote_news",
+        "full_tfm": "pred_full_tfm", "remote_tfm": "pred_remote_tfm"}
+check("TimesFM variants are reported", {"full_tfm", "remote_tfm"} <= set(metrics["all"])
+      and "dark_tfm" in metrics["dark"])
 for key, col in cols.items():
     if key in metrics["all"]:
         check(f"'{key}' recomputed from predictions.csv", score(test, col) == metrics["all"][key])
 dcols = {"persistence_dark": "pred_persist_dark", "dark": "pred_dark", "dark_conf": "pred_dark_conf",
-         "dark_news": "pred_dark_news"}
+         "dark_news": "pred_dark_news", "dark_tfm": "pred_dark_tfm"}
 for key, col in dcols.items():
     if key in metrics["dark"]:
         check(f"dark '{key}' recomputed from predictions.csv",
               score(test, col, "last_share3_dark") == metrics["dark"][key])
+for var in ("r3q", "price_yoy"):
+    d_ = test.dropna(subset=[f"tfm_{var}", f"naive_{var}", f"obs_{var}"])
+    got = {"n": int(len(d_)),
+           "mae_timesfm": round(float((d_[f"tfm_{var}"] - d_[f"obs_{var}"]).abs().mean()), 4),
+           "mae_last_value": round(float((d_[f"naive_{var}"] - d_[f"obs_{var}"]).abs().mean()), 4)}
+    check(f"driver check '{var}' recomputed from predictions.csv",
+          got == metrics.get("driver_check", {}).get(var), f"got={got}")
 
 readme = (ROOT / "README.md").read_text()
 n_rows = 0

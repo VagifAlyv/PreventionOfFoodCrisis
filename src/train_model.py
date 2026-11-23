@@ -23,6 +23,8 @@ IPC = ["last_share3", "last_mean_phase", "last_max_phase", "months_since_ipc", "
 IPC_DARK = [f + "_dark" for f in IPC]
 CONF = ["conf_deaths3", "conf_events3", "conf_change"]
 NEWS = ["news_food_share3", "news_food_log3", "news_food_change"]
+TFM = ["tfm_r3q", "tfm_price_yoy"]  # TimesFM 2.5 forecasts of the drivers at the target month
+DRIVERS = ["tfm_r3q", "naive_r3q", "obs_r3q", "tfm_price_yoy", "naive_price_yoy", "obs_price_yoy"]
 # Fixed before looking at test results; every variant is reported, not just the best one.
 # name: (features, column holding the forecast)
 VARIANTS = {
@@ -31,6 +33,7 @@ VARIANTS = {
     "dark": SAT + IPC_DARK, "dark_conf": SAT + IPC_DARK + CONF,
     "full_news": SAT + IPC + CONF + NEWS, "remote_news": SAT + CONF + NEWS,
     "dark_news": SAT + IPC_DARK + CONF + NEWS,
+    "full_tfm": SAT + IPC + TFM, "remote_tfm": SAT + CONF + TFM, "dark_tfm": SAT + IPC_DARK + TFM,
 }
 LABELS = {
     "r1q": "Rainfall, last month (% of normal)", "r3q": "Rainfall, last 3 months (% of normal)",
@@ -45,6 +48,7 @@ LABELS = {
     "news_food_share3": "Share of local news about hunger/drought, 3 months (GDELT)",
     "news_food_log3": "Hunger/drought news volume, 3 months (GDELT)",
     "news_food_change": "Hunger/drought news vs previous year (GDELT)",
+    "tfm_r3q": "TimesFM forecast: rainfall at target month", "tfm_price_yoy": "TimesFM forecast: cereal price change at target month",
 }
 LABELS.update({f + "_dark": LABELS[f] + " (12+ months old)" for f in IPC})
 
@@ -102,6 +106,8 @@ def shapes():
 
 def main():
     df = pd.read_csv(PROC / "panel.csv")
+    drv = pd.read_csv(PROC / "timesfm_drivers.csv")[["cc", "region", "target_date"] + DRIVERS]
+    df = df.merge(drv, on=["cc", "region", "target_date"], how="left", validate="one_to_one")
     df["country_id"] = df.cc.map({"ET": 0, "SO": 1, "SS": 2})
     df["t"] = pd.PeriodIndex(df.target_date, freq="M")
     df["k"] = pd.PeriodIndex(df.cutoff, freq="M")
@@ -124,13 +130,18 @@ def main():
     df["pred_persist"] = df.last_share3
     df["pred_persist_dark"] = df.last_share3_dark
     df = df.rename(columns={"pred_satellite": "pred_sat"})
+    # score exactly the values written to predictions.csv (4 decimals), so verify.py reproduces them
+    scored = ([c for c in df if c.startswith("pred_")] + DRIVERS
+              + ["y_share3", "last_share3", "last_share3_dark", "fews_proj_share3"])
+    df[scored] = df[scored].round(4)
 
     test = df[(df.target_date >= TEST_FROM) & df.y_share3.notna()]
     cols = {"persistence": "pred_persist", "full": "pred_full", "full_conf": "pred_full_conf",
             "full_news": "pred_full_news", "satellite": "pred_sat", "remote": "pred_remote",
-            "remote_news": "pred_remote_news", "fews": "fews_proj_share3"}
+            "remote_news": "pred_remote_news", "full_tfm": "pred_full_tfm", "remote_tfm": "pred_remote_tfm",
+            "fews": "fews_proj_share3"}
     dark_cols = {"persistence_dark": "pred_persist_dark", "dark": "pred_dark", "dark_conf": "pred_dark_conf",
-                 "dark_news": "pred_dark_news"}
+                 "dark_news": "pred_dark_news", "dark_tfm": "pred_dark_tfm"}
     if not has_news:
         cols = {k: c for k, c in cols.items() if "news" not in k}
         dark_cols = {k: c for k, c in dark_cols.items() if "news" not in k}
@@ -149,7 +160,10 @@ def main():
              ("remote", "pred_remote", "pred_persist"), ("dark", "pred_dark", "pred_persist_dark"),
              ("dark_conf", "pred_dark_conf", "pred_persist_dark"), ("dark_conf_vs_dark", "pred_dark_conf", "pred_dark"),
              ("full_news", "pred_full_news", "pred_persist"), ("remote_news_vs_remote", "pred_remote_news", "pred_remote"),
-             ("dark_news", "pred_dark_news", "pred_persist_dark"), ("dark_news_vs_dark", "pred_dark_news", "pred_dark")]
+             ("dark_news", "pred_dark_news", "pred_persist_dark"), ("dark_news_vs_dark", "pred_dark_news", "pred_dark"),
+             ("full_tfm", "pred_full_tfm", "pred_persist"), ("full_tfm_vs_full", "pred_full_tfm", "pred_full"),
+             ("remote_tfm_vs_remote", "pred_remote_tfm", "pred_remote"),
+             ("dark_tfm", "pred_dark_tfm", "pred_persist_dark"), ("dark_tfm_vs_dark", "pred_dark_tfm", "pred_dark")]
     pairs = [p for p in pairs if has_news or "news" not in p[0]]
     metrics["mae_diff_ci"] = {}
     for name, a, b in pairs:
@@ -160,6 +174,15 @@ def main():
         metrics["mae_diff_ci"][name] = {"diff": round(float(s_.sum() / n_.sum()), 3),
                                         "lo": round(float(np.percentile(boots, 2.5)), 3),
                                         "hi": round(float(np.percentile(boots, 97.5)), 3)}
+
+    # does TimesFM forecast the drivers themselves better than repeating the last value?
+    metrics["driver_check"] = {}
+    for var in ("r3q", "price_yoy"):
+        d = test.dropna(subset=[f"tfm_{var}", f"naive_{var}", f"obs_{var}"])
+        metrics["driver_check"][var] = {
+            "n": int(len(d)),
+            "mae_timesfm": round(float((d[f"tfm_{var}"] - d[f"obs_{var}"]).abs().mean()), 4),
+            "mae_last_value": round(float((d[f"naive_{var}"] - d[f"obs_{var}"]).abs().mean()), 4)}
 
     # what the final model leans on
     final_train = labelled[labelled.target_date < TEST_FROM]
@@ -180,6 +203,7 @@ def main():
         print(f"\n== test set ({scope}) ==")
         print(pd.DataFrame(metrics[scope]).T.to_string())
     print("\nMAE difference vs baseline (negative = better), 95% CI:", metrics["mae_diff_ci"])
+    print("\nTimesFM driver check:", metrics["driver_check"])
     print("\nfull-model drivers:", [(i["feature"], i["importance"]) for i in imp["full"][:5]])
 
     # worst misses, for the limitations slide
@@ -195,7 +219,7 @@ def main():
                 "price_is_national", "fews_proj_share3", "conf_deaths3", "conf_events3", "last_share3_dark",
                 "months_since_ipc_dark", "news_food_share3", "pred_full", "pred_full_conf", "pred_full_news",
                 "pred_sat", "pred_remote", "pred_remote_news", "pred_dark", "pred_dark_conf", "pred_dark_news",
-                "pred_persist", "pred_persist_dark"]
+                "pred_persist", "pred_persist_dark", "pred_full_tfm", "pred_remote_tfm", "pred_dark_tfm"] + DRIVERS
     df[out_cols].round(4).to_csv(ROOT / "results" / "predictions.csv", index=False)
     json.dump(metrics, open(ROOT / "results" / "metrics.json", "w"), indent=1)
 

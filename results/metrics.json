@@ -60,6 +60,30 @@
    "recoveries": 26,
    "recoveries_caught": 20
   },
+  "full_tfm": {
+   "n": 479,
+   "mae": 0.177,
+   "accuracy": 0.823,
+   "precision": 0.907,
+   "recall": 0.784,
+   "f1": 0.841,
+   "onsets": 40,
+   "onsets_caught": 6,
+   "recoveries": 26,
+   "recoveries_caught": 14
+  },
+  "remote_tfm": {
+   "n": 479,
+   "mae": 0.32,
+   "accuracy": 0.641,
+   "precision": 0.871,
+   "recall": 0.47,
+   "f1": 0.611,
+   "onsets": 40,
+   "onsets_caught": 4,
+   "recoveries": 26,
+   "recoveries_caught": 20
+  },
   "fews": {
    "n": 440,
    "mae": 0.119,
@@ -109,6 +133,18 @@
    "onsets_caught": 31,
    "recoveries": 53,
    "recoveries_caught": 46
+  },
+  "dark_tfm": {
+   "n": 479,
+   "mae": 0.271,
+   "accuracy": 0.66,
+   "precision": 0.856,
+   "recall": 0.519,
+   "f1": 0.646,
+   "onsets": 98,
+   "onsets_caught": 26,
+   "recoveries": 53,
+   "recoveries_caught": 39
   }
  },
  "common": {
@@ -169,6 +205,30 @@
    "f1": 0.623,
    "onsets": 30,
    "onsets_caught": 6,
+   "recoveries": 24,
+   "recoveries_caught": 19
+  },
+  "full_tfm": {
+   "n": 440,
+   "mae": 0.17,
+   "accuracy": 0.834,
+   "precision": 0.918,
+   "recall": 0.797,
+   "f1": 0.853,
+   "onsets": 30,
+   "onsets_caught": 3,
+   "recoveries": 24,
+   "recoveries_caught": 13
+  },
+  "remote_tfm": {
+   "n": 440,
+   "mae": 0.318,
+   "accuracy": 0.652,
+   "precision": 0.901,
+   "recall": 0.477,
+   "f1": 0.624,
+   "onsets": 30,
+   "onsets_caught": 3,
    "recoveries": 24,
    "recoveries_caught": 19
   },
@@ -242,6 +302,30 @@
     "precision": 0.333,
     "recall": 0.111,
     "f1": 0.167,
+    "onsets": 1,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 2
+   },
+   "full_tfm": {
+    "n": 143,
+    "mae": 0.11,
+    "accuracy": 0.923,
+    "precision": 0.735,
+    "recall": 0.926,
+    "f1": 0.82,
+    "onsets": 1,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 0
+   },
+   "remote_tfm": {
+    "n": 143,
+    "mae": 0.239,
+    "accuracy": 0.79,
+    "precision": 0.385,
+    "recall": 0.185,
+    "f1": 0.25,
     "onsets": 1,
     "onsets_caught": 0,
     "recoveries": 2,
@@ -321,6 +405,30 @@
     "recoveries": 22,
     "recoveries_caught": 18
    },
+   "full_tfm": {
+    "n": 216,
+    "mae": 0.263,
+    "accuracy": 0.69,
+    "precision": 0.888,
+    "recall": 0.608,
+    "f1": 0.722,
+    "onsets": 36,
+    "onsets_caught": 4,
+    "recoveries": 22,
+    "recoveries_caught": 14
+   },
+   "remote_tfm": {
+    "n": 216,
+    "mae": 0.356,
+    "accuracy": 0.477,
+    "precision": 0.812,
+    "recall": 0.273,
+    "f1": 0.408,
+    "onsets": 36,
+    "onsets_caught": 1,
+    "recoveries": 22,
+    "recoveries_caught": 18
+   },
    "fews": {
     "n": 198,
     "mae": 0.197,
@@ -395,6 +503,30 @@
     "recoveries": 2,
     "recoveries_caught": 0
    },
+   "full_tfm": {
+    "n": 120,
+    "mae": 0.102,
+    "accuracy": 0.942,
+    "precision": 0.974,
+    "recall": 0.966,
+    "f1": 0.97,
+    "onsets": 3,
+    "onsets_caught": 2,
+    "recoveries": 2,
+    "recoveries_caught": 0
+   },
+   "remote_tfm": {
+    "n": 120,
+    "mae": 0.353,
+    "accuracy": 0.758,
+    "precision": 0.968,
+    "recall": 0.778,
+    "f1": 0.863,
+    "onsets": 3,
+    "onsets_caught": 3,
+    "recoveries": 2,
+    "recoveries_caught": 0
+   },
    "fews": {
     "n": 110,
     "mae": 0.057,
@@ -446,6 +578,18 @@
     "onsets_caught": 0,
     "recoveries": 6,
     "recoveries_caught": 5
+   },
+   "dark_tfm": {
+    "n": 143,
+    "mae": 0.194,
+    "accuracy": 0.762,
+    "precision": 0.294,
+    "recall": 0.185,
+    "f1": 0.227,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 6,
+    "recoveries_caught": 2
    }
   },
   "Somalia": {
@@ -484,6 +628,18 @@
     "onsets_caught": 28,
     "recoveries": 44,
     "recoveries_caught": 41
+   },
+   "dark_tfm": {
+    "n": 216,
+    "mae": 0.366,
+    "accuracy": 0.468,
+    "precision": 0.792,
+    "recall": 0.266,
+    "f1": 0.398,
+    "onsets": 91,
+    "onsets_caught": 24,
+    "recoveries": 44,
+    "recoveries_caught": 37
    }
   },
   "South Sudan": {
@@ -522,6 +678,18 @@
     "onsets_caught": 3,
     "recoveries": 3,
     "recoveries_caught": 0
+   },
+   "dark_tfm": {
+    "n": 120,
+    "mae": 0.191,
+    "accuracy": 0.883,
+    "precision": 0.972,
+    "recall": 0.906,
+    "f1": 0.938,
+    "onsets": 3,
+    "onsets_caught": 2,
+    "recoveries": 3,
+    "recoveries_caught": 0
    }
   }
  },
@@ -555,6 +723,43 @@
    "diff": 0.008,
    "lo": 0.002,
    "hi": 0.015
+  },
+  "full_tfm": {
+   "diff": 0.043,
+   "lo": 0.021,
+   "hi": 0.061
+  },
+  "full_tfm_vs_full": {
+   "diff": 0.001,
+   "lo": -0.005,
+   "hi": 0.007
+  },
+  "remote_tfm_vs_remote": {
+   "diff": 0.006,
+   "lo": 0.001,
+   "hi": 0.011
+  },
+  "dark_tfm": {
+   "diff": 0.008,
+   "lo": -0.04,
+   "hi": 0.055
+  },
+  "dark_tfm_vs_dark": {
+   "diff": 0.009,
+   "lo": -0.001,
+   "hi": 0.018
+  }
+ },
+ "driver_check": {
+  "r3q": {
+   "n": 479,
+   "mae_timesfm": 25.12,
+   "mae_last_value": 35.6842
+  },
+  "price_yoy": {
+   "n": 463,
+   "mae_timesfm": 0.1388,
+   "mae_last_value": 0.1465
   }
  }
 }
