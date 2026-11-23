@@ -1,6 +1,6 @@
 # Design: adding Google's ready-made models to the crisis forecast
 
-Status: **proposal, nothing built or measured yet.** This document contains no results. Every performance number in this repo stays in `results/metrics.json`; this design adds none.
+Status: **TimesFM part (variant B) built and measured on 23 Nov 2026; it did not improve the crisis forecast. See README finding 6.** AlphaEarth (variants C and D) is not built yet; it needs an Earth Engine sign-in. This document itself contains no results. Every performance number stays in `results/metrics.json`.
 
 ## 1. Goal
 

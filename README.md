@@ -29,10 +29,14 @@ python3 src/build_dataset.py
 ```
 
 ```bash
+python3 src/timesfm_drivers.py
+```
+
+```bash
 python3 src/train_model.py
 ```
 
-Needs Python with pandas, scikit-learn and matplotlib. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the 23 November 2026 snapshot used for the results. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
+Needs Python with pandas, scikit-learn and matplotlib, plus `timesfm[torch]` for `timesfm_drivers.py`, which downloads the TimesFM 2.5 weights (925 MB) from Hugging Face on first run. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the 23 November 2026 snapshot used for the results. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
 
 ## Check the numbers
 
@@ -70,6 +74,8 @@ This is an independent audit, and it exits with an error if any check fails. It 
 | This tool plus conflict data <!-- all.full_conf --> | 81% | 6 of 40 | 18 points | 479 |
 | No ground data: rainfall and prices <!-- all.satellite --> | 64% | 5 of 40 | 32 points | 479 |
 | No ground data: rainfall, prices, conflict <!-- all.remote --> | 64% | 7 of 40 | 31 points | 479 |
+| This tool plus TimesFM forecasts <!-- all.full_tfm --> | 82% | 6 of 40 | 18 points | 479 |
+| No ground data: rainfall, prices, conflict, plus TimesFM <!-- all.remote_tfm --> | 64% | 4 of 40 | 32 points | 479 |
 | FEWS NET analysts' projection <!-- all.fews --> | 88% | 16 of 30 | 12 points | 440 |
 
 ### Once monitoring has gone dark (newest assessment 12+ months old)
@@ -79,6 +85,7 @@ This is an independent audit, and it exits with an error if any check fails. It 
 | Repeat the year-old assessment <!-- dark.persistence_dark --> | 68% | 0 of 98 | 26 points | 479 |
 | This tool in the dark <!-- dark.dark --> | 67% | 31 of 98 | 26 points | 479 |
 | This tool in the dark, plus conflict <!-- dark.dark_conf --> | 67% | 31 of 98 | 27 points | 479 |
+| This tool in the dark, plus TimesFM <!-- dark.dark_tfm --> | 66% | 26 of 98 | 27 points | 479 |
 
 The 95% ranges below come from a paired bootstrap over assessment dates, in `metrics.json` under `mae_diff_ci`.
 
@@ -94,6 +101,9 @@ The 95% ranges below come from a paired bootstrap over assessment dates, in `met
    So it is useful for flagging regions to check first, not for replacing an assessment.
 4. **Conflict data did not help.** Adding UCDP features changed the dark-scenario error by +0.8 points (95% range +0.2 to +1.5). The README's earlier guess that conflict data was the missing input is not supported.
 5. **Remote data alone cannot replace monitoring.** With no assessment at all, accuracy is 64%.
+6. **Google's TimesFM forecasting model did not help.** TimesFM 2.5 (zero-shot, no training) forecast each region's rainfall and cereal prices forward to the target month, and these forecasts were added as inputs. The variants were fixed before the results were seen.
+   - As a forecast of the drivers themselves it works better than repeating the last value: average error 25.1 against 35.7 points of rainfall-as-%-of-normal (479 cases), and 0.139 against 0.147 for the 12-month log price change (463 cases). These are under `driver_check` in `metrics.json`.
+   - It did not improve the crisis forecast. Against the same model without it, the average error changed by +0.1 points while monitoring works (95% range −0.5 to +0.7), +0.9 points in the dark (−0.1 to +1.8) and +0.6 points with no ground data (+0.1 to +1.1). In the dark it foresaw 26 of 98 new crises, against 31 without it.
 
 ## How this differs from existing systems
 
@@ -105,6 +115,8 @@ Its claim is limited to what the test above supports. It is a triage aid for reg
 
 ## Not done
 
+- AlphaEarth satellite embeddings (Google DeepMind) are designed in `docs/design-google-models.md` but not added. They need an Earth Engine sign-in.
+- TimesFM was pretrained on a large public corpus that was not checked for overlap with these rainfall and price series.
 - GDELT news features: the code is in place (`src/fetch_news.py`, `news_*` variants in `train_model.py`). The download was rate-limited by the API at the time of this commit, so no news results are reported yet.
 - No language-model reading of local press. It could not be back-tested honestly without the historical articles.
 - Regions are admin-1 only. FEWS NET units are finer, so local detail is averaged away.
@@ -119,6 +131,7 @@ Its claim is limited to what the test above supports. It is a triage aid for reg
 - WFP subnational rainfall indicators on HDX (from CHIRPS): `eth-rainfall-subnational`, `som-`, `ssd-`. Downloaded 10 November 2026.
 - UCDP Georeferenced Event Dataset 26.1 (1989–2025) and UCDP Candidate Events 26.0.1–26.0.9 (January–September 2026), `https://ucdp.uu.se/downloads/`. Downloaded 17 November 2026.
 - geoBoundaries gbOpen ADM1 outlines for ETH, SOM and SSD. Downloaded 17 November 2026.
+- TimesFM 2.5 weights, `google/timesfm-2.5-200m-pytorch` on Hugging Face (Apache-2.0), with the `timesfm` 3.0.2 Python package. Downloaded 23 November 2026.
 
 ## Prompt log addition
 
