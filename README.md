@@ -32,7 +32,7 @@ python3 src/build_dataset.py
 python3 src/train_model.py
 ```
 
-Needs Python with pandas, scikit-learn and matplotlib. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the 10 November 2026 snapshot used for the results. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
+Needs Python with pandas, scikit-learn and matplotlib. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the 23 November 2026 snapshot used for the results. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
 
 ## Check the numbers
 
@@ -59,41 +59,41 @@ This is an independent audit, and it exits with an error if any check fails. It 
 - **Model:** gradient-boosted trees (scikit-learn), with untuned default settings. The list of model variants was fixed before the results were seen, and every variant is reported below.
 - **Test:** walk-forward from January 2022 to June 2026. For each date the model is retrained using only outcomes that were known at the cutoff. The dark models only use outcomes known 12 months before it.
 
-## Results (468 test cases)
+## Results (479 test cases)
 
 ### While monitoring works
 
 | Method | Correct crisis calls | New crises foreseen | Average error | Cases |
 | --- | --- | --- | --- | --- |
-| Assume nothing changes <!-- all.persistence --> | 86% | 0 of 40 | 14 points | 468 |
-| This tool <!-- all.full --> | 82% | 7 of 40 | 18 points | 468 |
-| This tool plus conflict data <!-- all.full_conf --> | 81% | 6 of 40 | 18 points | 468 |
-| No ground data: rainfall and prices <!-- all.satellite --> | 63% | 5 of 40 | 32 points | 468 |
-| No ground data: rainfall, prices, conflict <!-- all.remote --> | 64% | 7 of 40 | 32 points | 468 |
-| FEWS NET analysts' projection <!-- all.fews --> | 88% | 16 of 30 | 12 points | 429 |
+| Assume nothing changes <!-- all.persistence --> | 86% | 0 of 40 | 13 points | 479 |
+| This tool <!-- all.full --> | 82% | 7 of 40 | 18 points | 479 |
+| This tool plus conflict data <!-- all.full_conf --> | 81% | 6 of 40 | 18 points | 479 |
+| No ground data: rainfall and prices <!-- all.satellite --> | 64% | 5 of 40 | 32 points | 479 |
+| No ground data: rainfall, prices, conflict <!-- all.remote --> | 64% | 7 of 40 | 31 points | 479 |
+| FEWS NET analysts' projection <!-- all.fews --> | 88% | 16 of 30 | 12 points | 440 |
 
 ### Once monitoring has gone dark (newest assessment 12+ months old)
 
 | Method | Correct crisis calls | New crises foreseen | Average error | Cases |
 | --- | --- | --- | --- | --- |
-| Repeat the year-old assessment <!-- dark.persistence_dark --> | 68% | 0 of 97 | 27 points | 468 |
-| This tool in the dark <!-- dark.dark --> | 66% | 31 of 97 | 26 points | 468 |
-| This tool in the dark, plus conflict <!-- dark.dark_conf --> | 67% | 31 of 97 | 27 points | 468 |
+| Repeat the year-old assessment <!-- dark.persistence_dark --> | 68% | 0 of 98 | 26 points | 479 |
+| This tool in the dark <!-- dark.dark --> | 67% | 31 of 98 | 26 points | 479 |
+| This tool in the dark, plus conflict <!-- dark.dark_conf --> | 67% | 31 of 98 | 27 points | 479 |
 
 The 95% ranges below come from a paired bootstrap over assessment dates, in `metrics.json` under `mae_diff_ci`.
 
 ## What the results show
 
 1. **While monitoring works, the tool does not beat simply repeating the last assessment.** Its average error is 4 points higher (95% range 2 to 6). Food crises persist, so that baseline is strong, and FEWS NET analysts beat both.
-2. **Once monitoring stops, the old assessment loses most of its value.** Its accuracy falls from 86% to 68%, and 97 regions enter a crisis it cannot foresee by definition.
-3. **In the dark, the tool's average error is no different from the year-old assessment** (difference 0 points, 95% range −5 to +4). The two fail in different ways:
-   - The tool foresees 31 of 97 new crises and 43 of 53 recoveries. The year-old assessment foresees none of either.
+2. **Once monitoring stops, the old assessment loses most of its value.** Its accuracy falls from 86% to 68%, and 98 regions enter a crisis it cannot foresee by definition.
+3. **In the dark, the tool's average error is no different from the year-old assessment** (difference 0 points, 95% range −5 to +5). The two fail in different ways:
+   - The tool foresees 31 of 98 new crises and 43 of 53 recoveries. The year-old assessment foresees none of either.
    - When the tool calls a crisis it is right 88% of the time, against 78% for the old assessment.
    - It misses more crises that are already under way: it finds 52% of them, against 66%.
 
    So it is useful for flagging regions to check first, not for replacing an assessment.
-4. **Conflict data did not help.** Adding UCDP features changed the dark-scenario error by +1 point (95% range 0 to +1). The README's earlier guess that conflict data was the missing input is not supported.
-5. **Remote data alone cannot replace monitoring.** With no assessment at all, accuracy is 63–64%.
+4. **Conflict data did not help.** Adding UCDP features changed the dark-scenario error by +0.8 points (95% range +0.2 to +1.5). The README's earlier guess that conflict data was the missing input is not supported.
+5. **Remote data alone cannot replace monitoring.** With no assessment at all, accuracy is 64%.
 
 ## How this differs from existing systems
 
@@ -114,7 +114,7 @@ Its claim is limited to what the test above supports. It is a triage aid for reg
 
 ## Data sources
 
-- FEWS NET Data Warehouse, IPC classifications: `https://fdw.fews.net/api/ipcphase.csv?country_code=ET` (also SO, SS). Downloaded 10 November 2026.
+- FEWS NET Data Warehouse, IPC classifications: `https://fdw.fews.net/api/ipcphase.csv?country_code=ET` (also SO, SS). Ethiopia re-downloaded 23 November 2026 (adds the October 2026 assessment); Somalia and South Sudan downloaded 10 November 2026.
 - WFP food prices on HDX: `wfp-food-prices-for-ethiopia`, `-somalia`, `-south-sudan`. Downloaded 10 November 2026.
 - WFP subnational rainfall indicators on HDX (from CHIRPS): `eth-rainfall-subnational`, `som-`, `ssd-`. Downloaded 10 November 2026.
 - UCDP Georeferenced Event Dataset 26.1 (1989–2025) and UCDP Candidate Events 26.0.1–26.0.9 (January–September 2026), `https://ucdp.uu.se/downloads/`. Downloaded 17 November 2026.
