@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Fetch the raw files that are too large for GitHub (over 100 MB) from their original sources.
+# 3-country experiment only (results/three_countries/, commit 93b27f6). The world pipeline uses download_world.sh.
 set -euo pipefail
 cd "$(dirname "$0")/../data/raw"
 

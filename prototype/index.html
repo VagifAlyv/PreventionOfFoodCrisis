@@ -23,7 +23,6 @@
         --obs: #2f6db5;
         --model: #6b4fbb;
         --fews: #2e8b57;
-        --tfm: #b0651f;
         --dark: #3b4a5a;
         --empty: #e3e8eb;
         --note: #fbf3e2;
@@ -43,7 +42,6 @@
           --obs: #5b9be6;
           --model: #9c83e8;
           --fews: #4fb57e;
-          --tfm: #e3a35c;
           --dark: #8a9aab;
           --empty: #222a33;
           --note: #2a2316;
@@ -63,7 +61,6 @@
         --obs: #5b9be6;
         --model: #9c83e8;
         --fews: #4fb57e;
-        --tfm: #e3a35c;
         --dark: #8a9aab;
         --empty: #222a33;
         --note: #2a2316;
@@ -155,23 +152,31 @@
         border-radius: 6px;
         padding: 10px;
       }
-      #map path {
-        stroke: var(--surface);
-        stroke-width: 0.12;
+      #map {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      #map path.land {
+        stroke: var(--line);
+        stroke-width: 0.6px;
+        vector-effect: non-scaling-stroke;
+      }
+      #map path.land:hover {
+        stroke: var(--ink2);
+      }
+      #map circle {
+        stroke: var(--ink);
+        stroke-width: 0.5px;
+        vector-effect: non-scaling-stroke;
         cursor: pointer;
         transition: fill 0.45s ease;
       }
-      #map path:hover,
-      #map path.sel {
-        stroke: var(--ink);
-        stroke-width: 0.3;
+      #map circle:hover,
+      #map circle.sel {
+        stroke-width: 2px;
       }
-      #map text {
-        font-size: 6px;
-        fill: var(--ink2);
-        pointer-events: none;
-      }
-      .mapwrap.is-dark #map path {
+      .mapwrap.is-dark #map circle {
         filter: saturate(0.85);
       }
       .darkbadge {
@@ -483,16 +488,17 @@
       <p class="lede">
         In 2025 the main famine early-warning system went offline for months
         after its funding stopped. This tool forecasts, four months ahead, how
-        much of each region in Ethiopia, Somalia and South Sudan will be in
-        crisis (IPC phase 3 or worse), using only data nobody has to go and
-        collect: satellite rainfall, market prices and conflict records. Every score below is from real data the model never saw while
-        training.
+        much of each region will be in crisis (IPC phase 3 or worse) in every
+        country FEWS NET monitors where the data joins up, using only data
+        nobody has to go and collect: satellite rainfall and market prices.
+        Every score below is from real data the model never saw while training.
       </p>
 
       <div class="hero">
         <div class="mapwrap" id="mapwrap">
           <span class="darkbadge">Last ground assessment is 12+ months old</span>
-          <svg id="map" role="img" aria-label="Map of forecast share in crisis by region"></svg>
+          <svg id="map" role="img" aria-label="World map of forecast share in crisis by region"></svg>
+          <p class="sub" id="mapNote" style="margin:6px 0 0;font-size:12.5px"></p>
         </div>
         <div>
           <div class="switch" role="group" aria-label="Scenario">
@@ -506,7 +512,7 @@
             </button>
           </div>
           <div class="row">
-            <span><span class="lbl">Country</span><span class="seg" id="countrySeg"></span></span>
+            <span><span class="lbl">Country</span><select id="countrySel" aria-label="Country"></select></span>
             <span><span class="lbl">Forecast for</span><select id="dateSel" aria-label="Forecast date"></select></span>
           </div>
           <h3 style="margin-top: 16px" id="watchTitle"></h3>
@@ -539,10 +545,10 @@
       </section>
 
       <section>
-        <h2>Every region, every assessment</h2>
+        <h2 id="heatTitle">Every region, every assessment</h2>
         <p class="sub">
-          One cell per region and FEWS NET assessment date. Click a row to open
-          that region.
+          One cell per region and FEWS NET assessment date, for the chosen
+          country (or the country of the chosen region). Click a row to open that region.
         </p>
         <div class="row" style="margin: 10px 0 4px">
           <span><span class="lbl">Show</span><span class="seg" id="modeSeg"></span></span>
@@ -587,22 +593,21 @@
       const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       const fmtDate = (s) => MONTHS[+s.slice(5, 7) - 1] + " " + s.slice(0, 4);
       const tnum = (s) => +s.slice(0, 4) + (+s.slice(5, 7) - 1) / 12;
-      const HAS_NEWS = D.rows.some((r) => r.news_food_share3 != null);
 
       /* The forecast each scenario shows. Chosen before results were seen (see train_model.py). */
       const SC = {
         live: {
-          pred: "pred_full", base: "pred_persist", last: "last_share3", metrics: () => D.metrics.all,
+          pred: "pred_full", base: "pred_persist", last: "last_share3", metrics: () => D.metrics.paired,
           name: "This tool", baseName: "Assume nothing changes",
         },
         dark: {
-          pred: HAS_NEWS ? "pred_dark_news" : "pred_dark_conf", base: "pred_persist_dark", last: "last_share3_dark",
-          metrics: () => D.metrics.dark, name: "This tool, in the dark", baseName: "Repeat the year-old assessment",
+          pred: "pred_dark", base: "pred_persist_dark", last: "last_share3_dark",
+          metrics: () => D.metrics.dark_paired, name: "This tool, in the dark", baseName: "Repeat the year-old assessment",
         },
       };
-      const darkKey = HAS_NEWS ? "dark_news" : "dark_conf";
+      const darkKey = "dark";
       const state = { sc: "live", country: "All", mode: "observed", region: null, date: null };
-      const COUNTRIES = ["All", "Ethiopia", "Somalia", "South Sudan"];
+      const COUNTRIES = ["All", ...[...new Set(D.rows.map((r) => r.country))].sort()];
       const testRows = D.rows.filter((r) => r.target_date >= D.test_from);
       const dates = [...new Set(testRows.map((r) => r.target_date))].sort();
       const lastObserved = D.rows.filter((r) => r.y_share3 != null).map((r) => r.target_date).sort().pop();
@@ -611,9 +616,10 @@
         (d) => d < lastObserved && !D.rows.some((r) => r.target_date === d && r.y_share3 != null),
       );
       state.date = futureDates[futureDates.length - 1] || dates[dates.length - 1];
-      const key = (r) => r.country + "|" + r.region;
+      const key = (r) => r.pcode;
       const byKey = new Map(D.rows.map((r) => [key(r) + "|" + r.target_date, r]));
-      const CC = { ET: "Ethiopia", SO: "Somalia", SS: "South Sudan" };
+      const REG = new Map(D.regions.map((g) => [g.pcode, g]));
+      const NAME = new Map(D.rows.map((r) => [r.pcode, r]));
 
       /* IPC-derived ramp: share of a region in phase 3+ */
       const STOPS = [
@@ -659,33 +665,52 @@
         $("regionTitle").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
       }
 
-      /* map */
-      const X0 = 23.2, Y0 = 15.1, S = 10;
+      /* map: world outlines (Natural Earth), one dot per region at its OCHA centre point */
+      const LON0 = -180, LAT0 = 75, S = 1.6;
+      const px = (lon) => (lon - LON0) * S, py = (lat) => (LAT0 - lat) * S;
+      const COV = new Map(Object.entries(D.coverage));
       function map() {
         const svg = $("map"), sc = SC[state.sc];
         svg.innerHTML = "";
-        svg.setAttribute("viewBox", "0 0 286 170");
         $("mapwrap").classList.toggle("is-dark", state.sc === "dark");
-        D.shapes.forEach((s) => {
-          const country = CC[s.cc];
-          if (state.country !== "All" && country !== state.country) return;
-          const r = byKey.get(country + "|" + s.region + "|" + state.date);
-          const v = r ? r[sc.pred] : null;
-          const d = s.rings
-            .map((ring) => "M" + ring.map(([x, y]) => ((x - X0) * S).toFixed(1) + " " + ((Y0 - y) * S).toFixed(1)).join("L") + "Z")
-            .join("");
-          const p = el("path", { d, fill: ramp(v), tabindex: 0, role: "button", "aria-label": `${s.region}, ${country}: ${pct(v)} forecast in crisis` });
-          if (state.region === country + "|" + s.region) p.classList.add("sel");
-          p.onmousemove = (e) => showTip(e, tipHtml(r, s.region, country));
+        const shown = D.regions.filter((g) => g.lat != null && (state.country === "All" || NAME.get(g.pcode)?.country === state.country));
+        if (state.country === "All" || !shown.length) svg.setAttribute("viewBox", `0 ${py(75)} ${px(180)} ${py(-58) - py(75)}`);
+        else {
+          const xs = shown.map((g) => px(g.lon)), ys = shown.map((g) => py(g.lat));
+          const pad = 6, x0 = Math.min(...xs) - pad, x1 = Math.max(...xs) + pad, y0 = Math.min(...ys) - pad, y1 = Math.max(...ys) + pad;
+          const w = Math.max(x1 - x0, (y1 - y0) * 1.7), h = Math.max(y1 - y0, w / 1.7);
+          svg.setAttribute("viewBox", `${(x0 + x1 - w) / 2} ${(y0 + y1 - h) / 2} ${w} ${h}`);
+        }
+        const vbW = +svg.getAttribute("viewBox").split(" ")[2], zoom = vbW / px(180);
+        D.world.forEach((c) => {
+          const cov = COV.get(c.iso2), inModel = cov && cov.included;
+          const d = c.rings.map((ring) => "M" + ring.map(([x, y]) => px(x).toFixed(1) + " " + py(y).toFixed(1)).join("L") + "Z").join("");
+          const p = el("path", { d, class: "land", fill: css(inModel ? "--empty" : "--grid"), stroke: css("--line"), "stroke-width": 0.4 * zoom });
+          p.onmousemove = (e) => showTip(e, `<b>${c.name}</b><br>` + (inModel
+            ? `FEWS NET monitors it. ${cov.regions} regions in this tool.`
+            : cov ? `FEWS NET monitors it, but it is left out: ${cov.reason}.` : "Not monitored by FEWS NET, so no data here."));
           p.onmouseleave = hideTip;
-          p.onclick = () => pick(country + "|" + s.region);
-          p.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(country + "|" + s.region); } };
+          if (inModel) { p.style.cursor = "pointer"; p.onclick = () => { state.country = cov.country; render(); }; }
           svg.appendChild(p);
         });
-        [["Ethiopia", 36.6, 9.6], ["Somalia", 45.2, 3.4], ["South Sudan", 27.6, 8.4]].forEach(([n, x, y]) => {
-          if (state.country === "All" || state.country === n)
-            svg.appendChild(el("text", { x: (x - X0) * S, y: (Y0 - y) * S, "font-weight": 600 }, n));
+        shown.forEach((g) => {
+          const r = byKey.get(g.pcode + "|" + state.date), v = r ? r[sc.pred] : null, info = NAME.get(g.pcode);
+          const dot = el("circle", { cx: px(g.lon), cy: py(g.lat), r: state.country === "All" ? 1.7 : Math.max(0.12, vbW * 0.009), fill: ramp(v), stroke: css("--ink"),
+            tabindex: 0, role: "button", "aria-label": `${info.region}, ${info.country}: ${pct(v)} forecast in crisis` });
+          if (state.region === g.pcode) dot.classList.add("sel");
+          dot.onmousemove = (e) => showTip(e, tipHtml(r, info.region, info.country));
+          dot.onmouseleave = hideTip;
+          dot.onclick = () => pick(g.pcode);
+          dot.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(g.pcode); } };
+          svg.appendChild(dot);
         });
+        const miss = {};
+        D.regions.filter((g) => g.lat == null).forEach((g) => { const c = NAME.get(g.pcode)?.country; if (c) miss[c] = (miss[c] || 0) + 1; });
+        const noDot = Object.entries(miss).map(([c, n]) => `${n} in ${c}`);
+        const inc = [...COV.values()].filter((c) => c.included).length, out = [...COV.values()].filter((c) => !c.included).map((c) => `${c.country}: ${c.reason}`);
+        $("mapNote").textContent = `Shaded: the ${inc} FEWS NET countries in this tool` + (out.length ? ` (left out: ${out.join("; ")})` : "") +
+          `. Grey: not monitored by FEWS NET, so no data, which does not mean no hunger. Each dot is one region at its OCHA centre point. Click a country to zoom in.` +
+          (noDot.length ? ` Regions with no centre point in the OCHA table are not drawn: ${noDot.join(", ")}.` : "");
       }
       function tipHtml(r, region, country) {
         if (!r) return `<b>${region}, ${country}</b><br>No forecast for this date`;
@@ -731,15 +756,12 @@
           ? [
               ["persistence", sc.baseName, "--muted", "Repeat the last known status. Hard to beat."],
               ["full", sc.name, "--model", "Rainfall, prices and the last assessment."],
-              ["full_tfm", "Plus Google TimesFM", "--tfm", "This tool plus TimesFM 2.5 forecasts of rainfall and prices."],
-              [HAS_NEWS ? "remote_news" : "remote", "No ground data at all", "--dark", "Rainfall, prices, conflict" + (HAS_NEWS ? ", news." : ".")],
+              ["satellite", "No ground data at all", "--dark", "Rainfall and prices only."],
               ["fews", "FEWS NET analysts", "--fews", "Human experts with field teams."],
             ]
           : [
               ["persistence_dark", sc.baseName, "--muted", "What you are left with when monitoring stops."],
-              [darkKey, sc.name, "--model", "Year-old assessment plus rainfall, prices, conflict" + (HAS_NEWS ? " and news." : ".")],
-              ["dark", HAS_NEWS ? "Without conflict or news" : "Without conflict data", "--dark", "Year-old assessment plus rainfall and prices."],
-              ["dark_tfm", "Plus Google TimesFM", "--tfm", "Year-old assessment, rainfall and prices, plus TimesFM 2.5 forecasts of both."],
+              [darkKey, sc.name, "--model", "Year-old assessment plus rainfall and prices."],
             ];
         $("score").innerHTML = defs.map(([k, name, col, d]) => {
           const m = M[k];
@@ -754,10 +776,11 @@
         $("scoreTitle").textContent = state.sc === "live" ? "How accurate is it while monitoring works?" : "How accurate is it once monitoring stops?";
         $("scoreSub").textContent =
           `Every assessment from ${fmtDate(D.test_from)} to ${fmtDate(lastObserved)}` +
-          (state.country === "All" ? " in 39 regions." : ` in ${state.country}.`) +
+          (state.country === "All" ? ` in ${D.metrics.test_regions} regions of ${D.metrics.test_countries} countries, counting only cases with an earlier assessment to compare against.` : ` in ${state.country}.`) +
           ` For each date the model was retrained using only outcomes known at the time.` +
           (state.sc === "dark" ? " In this scenario the newest assessment it may use is at least 12 months older than the data cutoff, and it is trained only on outcomes known by then." : "");
-        const ci = (k) => CI[k] ? ` (difference ${CI[k].diff > 0 ? "+" : ""}${Math.round(CI[k].diff * 100)} points, 95% range ${Math.round(CI[k].lo * 100)} to ${Math.round(CI[k].hi * 100)})` : "";
+        const s1 = (v) => (v < 0 ? "−" : "+") + Math.abs(v * 100).toFixed(1);
+        const ci = (k) => CI[k] ? `; difference ${s1(CI[k].diff)} points, 95% range ${s1(CI[k].lo)} to ${s1(CI[k].hi)}` : "";
         if (state.sc === "live") {
           const p = M.persistence, f = M.full, w = M.fews;
           $("scoreNote").innerHTML =
@@ -768,10 +791,10 @@
         } else {
           const p = M.persistence_dark, f = M[darkKey];
           $("scoreNote").innerHTML =
-            `<b>Honest reading:</b> once the newest assessment is a year old, the tool and the old assessment have about the same average error` +
-            `${state.country === "All" ? ci(darkKey) : ""}, but they fail differently. Repeating the old assessment cannot foresee any change. ` +
+            `<b>Honest reading:</b> once the newest assessment is a year old, the tool's average error is ${Math.round(f.mae * 100)} points against ${Math.round(p.mae * 100)} for repeating the old assessment` +
+            `${state.country === "All" ? ci(darkKey) : ""}, and the two fail differently. Repeating the old assessment cannot foresee any change. ` +
             `The tool foresaw <b>${f.onsets_caught} of ${f.onsets}</b> new crises and ${f.recoveries_caught} of ${f.recoveries} recoveries, ` +
-            `and when it calls a crisis it is right ${pct(f.precision)} of the time (old assessment: ${pct(p.precision)}). ` +
+            (f.precision == null ? "and it called no region in crisis. " : `and when it calls a crisis it is right ${pct(f.precision)} of the time (old assessment: ${pct(p.precision)}). `) +
             `It misses more existing crises (${pct(f.recall)} found against ${pct(p.recall)}), so it should flag regions for a check, not replace one.`;
         }
       }
@@ -817,12 +840,12 @@
         sel.innerHTML = regs.map((r) => `<option value="${key(r)}">${r.region}, ${r.country}</option>`).join("");
         sel.value = state.region;
         sel.onchange = () => pick(sel.value);
-        const [country, region] = state.region.split("|");
+        const { country, region } = NAME.get(state.region);
         $("regionTitle").textContent = `${region}, ${country}`;
         const sc = SC[state.sc];
-        const rows = D.rows.filter((r) => r.country === country && r.region === region && r.target_date >= "2016-01")
+        const rows = D.rows.filter((r) => r.pcode === state.region && r.target_date >= "2018-01")
           .sort((a, b) => a.target_date.localeCompare(b.target_date));
-        const svg = $("line"), W = 1100, H = 260, x0 = 2016, x1 = 2027.4;
+        const svg = $("line"), W = 1100, H = 260, x0 = 2018, x1 = 2027.4;
         const { X, Y, m } = axisChart(svg, { W, H, x0, x1, y0: 0, y1: 1, yTicks: [0, 0.25, 0.5, 0.75, 1], yFmt: pct, ref: 0.5 });
         if (gapDates.length) {
           const a = tnum(gapDates[0]) - 0.15, b = tnum(gapDates[gapDates.length - 1]) + 0.15;
@@ -853,7 +876,7 @@
         hit.onmouseleave = () => { hideTip(); cross.setAttribute("opacity", 0); };
         svg.appendChild(hit);
 
-        const mo = D.monthly.filter((r) => r.country === country && r.region === region && r.date >= "2016-01");
+        const mo = D.monthly.filter((r) => r.pcode === state.region && r.date >= "2018-01");
         const box = $("smalls");
         box.innerHTML = "";
         const add = (title, note, pts, o) => {
@@ -867,22 +890,12 @@
         };
         add("Rainfall, last 3 months", "% of the long-term normal, CHIRPS satellite",
           mo.filter((r) => r.r3q != null).map((r) => [tnum(r.date), r.r3q, r.date]),
-          { y0: 0, y1: 250, ticks: [0, 100, 200], ref: 100, fmt: (v) => Math.round(v) + "%", col: "--obs" });
+          { y0: 0, y1: 250, ticks: [0, 100, 200], ref: 100, fmt: (v) => Math.round(v) + "%", col: "--obs", empty: "No rainfall series could be matched to this region." });
         const pr = mo.filter((r) => r.price_yoy != null).map((r) => [tnum(r.date), (Math.exp(r.price_yoy) - 1) * 100, r.date]);
         const cap = Math.min(400, Math.max(100, Math.ceil(Math.max(0, ...pr.map((p) => p[1])) / 100) * 100));
         add("Cereal prices", "% change on a year earlier, WFP markets",
           pr.map((p) => [p[0], Math.min(p[1], cap), p[2], p[1]]),
           { y0: -50, y1: cap, ticks: [0, 100, 200, 300, 400].filter((t) => t <= cap), ref: 0, fmt: (v) => (v > 0 ? "+" : "") + Math.round(v) + "%", col: "--model", empty: "No WFP market here. The model uses the national median." });
-        const cf = mo.filter((r) => r.conf_events != null).map((r) => [tnum(r.date), r.conf_events, r.date]);
-        const cmax = Math.max(5, ...cf.map((p) => p[1]));
-        add("Conflict events per month", `UCDP organised violence, to ${fmtDate(D.conflict_through)}`, cf,
-          { y0: 0, y1: cmax, ticks: [0, Math.round(cmax / 2), Math.round(cmax)], fmt: (v) => Math.round(v), col: "--dark", bars: true });
-        if (HAS_NEWS) {
-          const nw = mo.filter((r) => r.news_food != null).map((r) => [tnum(r.date), r.news_food, r.date]);
-          const nmax = Math.max(5, ...nw.map((p) => p[1]));
-          add("Hunger and drought news", "Articles per month, GDELT, all languages", nw,
-            { y0: 0, y1: nmax, ticks: [0, Math.round(nmax / 2), Math.round(nmax)], fmt: (v) => Math.round(v), col: "--fews" });
-        }
       }
       function small(svg, pts, o) {
         const W = 360, H = 150;
@@ -911,7 +924,10 @@
 
       /* heatmap */
       function heat() {
-        const regs = regionList(), svg = $("heat"), sc = SC[state.sc];
+        const hc = state.country === "All" ? NAME.get(state.region)?.country : state.country;
+        const regs = regionList().filter((r) => r.country === hc), svg = $("heat"), sc = SC[state.sc];
+        $("heatTitle").textContent = `Every region in ${hc}, every assessment`;
+        const dates = [...new Set(testRows.filter((r) => r.country === hc).map((r) => r.target_date))].sort();
         svg.innerHTML = "";
         const L = 190, T = 46, cw = 50, ch = 22, W = L + dates.length * cw + 10;
         let y = T;
@@ -936,7 +952,7 @@
           const row = el("g", { style: "cursor:pointer" });
           row.onclick = () => pick(key(r));
           row.appendChild(el("text", { x: L - 8, y: pos[i] + 15, "text-anchor": "end", style: "fill:var(--ink)" },
-            (state.country === "All" ? r.country.replace("South Sudan", "S. Sudan") + ", " : "") + r.region));
+            r.region));
           dates.forEach((d, j) => {
             const c = byKey.get(key(r) + "|" + d);
             if (!c) return;
@@ -977,31 +993,31 @@
         $("impSub").textContent = `How much the error grows when each input is scrambled, for the ${state.sc === "live" ? "standard" : "dark-scenario"} model. Longer bar means it depends on it more.`;
         $("imp").innerHTML = imp.map((i) => `<div style="display:grid;grid-template-columns:minmax(0,250px) 1fr;gap:10px;align-items:center;font-size:13px;margin:6px 0">
           <span>${i.feature}</span><span><span class="bar" style="width:${Math.max(1.5, (i.importance / mx) * 100)}%"></span></span></div>`).join("");
-        const CI = D.metrics.mae_diff_ci;
+        const CI = D.metrics.mae_diff_ci, sg = (v) => (v < 0 ? "−" : "+") + Math.abs(v * 100).toFixed(1);
+        const rng = (c) => `${sg(c.diff)} points (95% range ${sg(c.lo)} to ${sg(c.hi)})`;
+        const left = Object.values(D.coverage).filter((c) => !c.included);
         const lessons = [
           "The last ground assessment matters most. When it is recent, nothing else adds much.",
-          `Conflict data from UCDP did not improve accuracy${CI.dark_conf_vs_dark ? ` (average error ${CI.dark_conf_vs_dark.diff >= 0 ? "+" : ""}${Math.round(CI.dark_conf_vs_dark.diff * 100)} points versus without it)` : ""}. Large Somali misses remain.`,
+          `Across all countries, the tool's average error compared with repeating the last assessment: ${rng(CI.full)} while monitoring works, and ${rng(CI.dark)} against the year-old assessment in the dark.`,
+          `Rainfall and prices alone: ${rng(CI.satellite)} against repeating the last assessment.`,
+          `Conflict data and Google's TimesFM forecasts were tested on Ethiopia, Somalia and South Sudan first and did not help, so they are not used here (details in the README).`,
+          `${Object.keys(D.coverage).length - left.length} of ${Object.keys(D.coverage).length} FEWS NET countries are included` + (left.length ? `; left out: ${left.map((c) => `${c.country} (${c.reason})`).join(", ")}.` : "."),
         ];
-        if (HAS_NEWS && CI.dark_news_vs_dark)
-          lessons.push(`Adding hunger news from GDELT changed the dark-scenario error by ${CI.dark_news_vs_dark.diff >= 0 ? "+" : ""}${Math.round(CI.dark_news_vs_dark.diff * 100)} points (95% range ${Math.round(CI.dark_news_vs_dark.lo * 100)} to ${Math.round(CI.dark_news_vs_dark.hi * 100)}).`);
-        const dc = D.metrics.driver_check, sg = (v) => (v < 0 ? "−" : "+") + Math.abs(v * 100).toFixed(1);
-        const rng = (c) => `${sg(c.diff)} points (95% range ${sg(c.lo)} to ${sg(c.hi)})`;
-        if (dc && CI.full_tfm_vs_full && CI.dark_tfm_vs_dark)
-          lessons.push(`Google's TimesFM 2.5 forecast rainfall better than repeating the last value (average error ${dc.r3q.mae_timesfm.toFixed(1)} against ${dc.r3q.mae_last_value.toFixed(1)} points of % of normal), ` +
-            `but adding its rainfall and price forecasts did not improve the crisis forecast: average error ${rng(CI.full_tfm_vs_full)} while monitoring works and ${rng(CI.dark_tfm_vs_dark)} in the dark.`);
         lessons.push(`No assessments exist for ${gapDates.map(fmtDate).join(" and ") || "some periods"}, the months of the 2025 funding stop.`);
         $("lessons").innerHTML = lessons.map((t) => `<li>${t}</li>`).join("");
         $("foot").innerHTML =
-          `Data: FEWS NET Data Warehouse (IPC classifications); WFP food prices and CHIRPS rainfall indicators via HDX; UCDP GED 26.1 and Candidate Events to ${fmtDate(D.conflict_through)}; ` +
-          (HAS_NEWS ? "GDELT DOC 2.0 news volumes; " : "") + "TimesFM 2.5 forecasting model (Google Research, Apache-2.0); " +
-          `region outlines from geoBoundaries. Model: gradient-boosted trees, ${D.train_rows} training cases before ${fmtDate(D.test_from)}, ${D.test_rows} test cases. ` +
+          `Data: FEWS NET Data Warehouse (IPC classifications); WFP food prices and CHIRPS rainfall indicators via HDX; ` +
+          `OCHA admin-boundary tables (COD-AB) via HDX; country outlines from Natural Earth. Model: gradient-boosted trees, ${D.train_rows} training cases before ${fmtDate(D.test_from)}, ${D.test_rows} test cases. ` +
           `Built ${D.generated}. Student prototype for a university course, not for operational use. All numbers can be checked with <code>python3 src/verify.py</code>.`;
       }
 
       function render() {
         $("scLive").setAttribute("aria-pressed", state.sc === "live");
         $("scDark").setAttribute("aria-pressed", state.sc === "dark");
-        seg("countrySeg", COUNTRIES.map((c) => [c, c]), "country", render);
+        const cs = $("countrySel");
+        cs.innerHTML = COUNTRIES.map((c) => `<option value="${c}">${c === "All" ? "All countries" : c}</option>`).join("");
+        cs.value = state.country;
+        cs.onchange = () => { state.country = cs.value; render(); };
         seg("modeSeg", [["observed", "What happened"], ["forecast", "What the tool forecast"], ["error", "Forecast error"]], "mode", render);
         const ds = $("dateSel");
         ds.innerHTML = [...dates].reverse().map((d) => `<option value="${d}">${fmtDate(d)}${d > lastObserved ? " (ahead)" : ""}</option>`).join("");

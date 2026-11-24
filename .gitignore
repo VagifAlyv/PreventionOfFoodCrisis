@@ -7,3 +7,6 @@ __pycache__/
 
 # local Claude Code settings and instructions
 .claude/
+
+# 39-country raw data (about 2.6 GB); fetch with src/download_world.sh
+data/raw/world/

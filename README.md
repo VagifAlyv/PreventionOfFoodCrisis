@@ -2,9 +2,9 @@
 
 Course project for Global Issues and AI (FITE GIA).
 
-In 2025 FEWS NET, the main famine early-warning system, went offline for months after its funding stopped. The FEWS NET download used here has no assessments at all for February and June 2025. This project asks a narrow, testable question. When the ground assessments stop, how well can free, remotely collected data forecast food crises four months ahead? The remote data is satellite rainfall, market prices, conflict records and news.
+In 2025 FEWS NET, the main famine early-warning system, went offline for months after its funding stopped. In the data used here, no country has a FEWS NET assessment between October 2024 and October 2025. This project asks a narrow, testable question: when the ground assessments stop, how well can free, remotely collected data (satellite rainfall and market prices) forecast food crises four months ahead?
 
-It covers 39 admin-1 regions in Ethiopia, Somalia and South Sudan. A dashboard shows where the forecasts work and where they fail.
+It covers every country FEWS NET monitors that the data allows: 633 admin-1 regions in 38 countries across Africa, Asia, Latin America and the Middle East. A world dashboard shows where the forecasts work and where they fail.
 
 ## Open the dashboard
 
@@ -17,11 +17,7 @@ Then open http://localhost:8765. The switch at the top moves between two scenari
 ## Rebuild from the raw data
 
 ```bash
-bash src/download_large.sh
-```
-
-```bash
-python3 src/conflict.py
+bash src/download_world.sh
 ```
 
 ```bash
@@ -29,14 +25,10 @@ python3 src/build_dataset.py
 ```
 
 ```bash
-python3 src/timesfm_drivers.py
-```
-
-```bash
 python3 src/train_model.py
 ```
 
-Needs Python with pandas, scikit-learn and matplotlib, plus `timesfm[torch]` for `timesfm_drivers.py`, which downloads the TimesFM 2.5 weights (925 MB) from Hugging Face on first run. Two raw files are larger than GitHub's 100 MB limit and are not in the repository; `download_large.sh` fetches them from their original sources. FEWS NET serves live data, so a fresh download can differ slightly from the snapshots used for the results: Ethiopia from 23 November 2026, Somalia and South Sudan from 10 November 2026. `python3 src/fetch_news.py` re-downloads the GDELT news series, which takes about 15 minutes because the API allows one request every 5 seconds.
+Needs Python with pandas, scikit-learn and openpyxl. `download_world.sh` fetches about 2.6 GB into `data/raw/world/` (not in the repository), using the HDX links in `src/world_countries.csv` as of 24 November 2026. FEWS NET serves live data, so a fresh download can differ slightly from the 24 November 2026 snapshot used for the results.
 
 ## Check the numbers
 
@@ -44,12 +36,12 @@ Needs Python with pandas, scikit-learn and matplotlib, plus `timesfm[torch]` for
 python3 src/verify.py
 ```
 
-This is an independent audit, and it exits with an error if any check fails. It checks these things:
+This is an independent audit, and it exits with an error if any check fails:
 
-- It recomputes region crisis shares straight from the raw FEWS NET files.
+- It recomputes region crisis shares straight from each country's raw FEWS NET file, using a simpler matching rule than the build. This runs for 27 countries; the others have too few regions that the simpler rule can match.
+- It checks that `results/coverage.json` agrees with the data, and that every left-out country has a stated reason.
 - It confirms that no input is dated after the forecast cutoff, including in the dark scenario.
-- It compares the coordinate-based placement of conflict events against UCDP's own region names. They agree for 99.6% of events.
-- It recomputes every metric from `results/predictions.csv` and confirms that each row of the tables below matches `results/metrics.json`.
+- It recomputes every metric from `results/predictions.csv`, and the earlier 3-country results from `results/three_countries/`, and checks each row of the tables below against them.
 
 ## What it does
 
@@ -57,84 +49,101 @@ This is an independent audit, and it exits with an error if any check fails. It 
 - **Target:** the share of the region's FEWS NET units in IPC phase 3 or worse. "In crisis" means 50% or more.
 - **Inputs, as known four months before the target date:**
   - CHIRPS rainfall as a percentage of normal (1 and 3 months, the driest spell in the past year, the 6-month average)
-  - WFP cereal prices, change over 3 and 12 months
-  - UCDP organised violence: events and deaths in the last 3 months, and the change against the previous year. Each event is placed in its region by its coordinates.
+  - WFP cereal prices, change over 3 and 12 months (the national median where a region has no market)
   - The last FEWS NET assessment and how old it is. In the dark scenario this is the newest one at least 12 months before the cutoff.
-- **Model:** gradient-boosted trees (scikit-learn), with untuned default settings. The list of model variants was fixed before the results were seen, and every variant is reported below.
-- **Test:** walk-forward from January 2022 to June 2026. For each date the model is retrained using only outcomes that were known at the cutoff. The dark models only use outcomes known 12 months before it.
+  - The country and the month
+- **Model:** gradient-boosted trees (scikit-learn), untuned. The variants and comparisons were fixed before the results were seen, and all of them are reported below.
+- **Test:** walk-forward over every assessment from February 2022 to October 2026. For each date the model is retrained using only outcomes known at the cutoff. The dark model uses only outcomes known 12 months before it.
 
-## Results (479 test cases)
+### Matching regions across sources
+
+Each source names regions its own way. Regions are keyed by the OCHA admin-1 code (p-code). A FEWS NET unit is assigned to the right-most part of its name that exactly matches an OCHA admin-1 name (in any language the OCHA table lists), or else to the parent of an exactly matching admin-2 name. Names are compared after lower-casing, removing accents and dropping words such as "region" and "province". Nothing is matched by similarity. The reasoning is in `docs/adr/0001-world-coverage.md`.
+
+- 96.3% of FEWS NET unit-assessments were matched. The rest are left out.
+- Below 90%: Syria 57%, Yemen 72%, Burkina Faso 87% (pre-2025 region names), Burundi 87%, Angola 88%.
+- Lesotho is left out because HDX has no OCHA region table for it.
+- Per-country details are in `results/coverage.json`.
+
+## Results
 
 ### While monitoring works
 
+Like-for-like: only cases where there is an earlier assessment to repeat. A region's first-ever assessment (260 cases, mostly countries FEWS NET added in 2026) has none. On all 5,181 cases this tool gets 89% right with an average error of 14 points.
+
 | Method | Correct crisis calls | New crises foreseen | Average error | Cases |
 | --- | --- | --- | --- | --- |
-| Assume nothing changes <!-- all.persistence --> | 86% | 0 of 40 | 13 points | 479 |
-| This tool <!-- all.full --> | 82% | 7 of 40 | 18 points | 479 |
-| This tool plus conflict data <!-- all.full_conf --> | 81% | 6 of 40 | 18 points | 479 |
-| No ground data: rainfall and prices <!-- all.satellite --> | 64% | 5 of 40 | 32 points | 479 |
-| No ground data: rainfall, prices, conflict <!-- all.remote --> | 64% | 7 of 40 | 31 points | 479 |
-| This tool plus TimesFM forecasts <!-- all.full_tfm --> | 82% | 6 of 40 | 18 points | 479 |
-| No ground data: rainfall, prices, conflict, plus TimesFM <!-- all.remote_tfm --> | 64% | 4 of 40 | 32 points | 479 |
-| FEWS NET analysts' projection <!-- all.fews --> | 88% | 16 of 30 | 12 points | 440 |
+| Assume nothing changes <!-- paired.persistence --> | 90% | 0 of 283 | 10 points | 4921 |
+| This tool <!-- paired.full --> | 89% | 14 of 283 | 14 points | 4921 |
+| No ground data: rainfall and prices <!-- paired.satellite --> | 79% | 17 of 283 | 21 points | 4921 |
+| FEWS NET analysts' projection <!-- paired.fews --> | 93% | 176 of 251 | 7 points | 4486 |
 
 ### Once monitoring has gone dark (newest assessment 12+ months old)
 
 | Method | Correct crisis calls | New crises foreseen | Average error | Cases |
 | --- | --- | --- | --- | --- |
-| Repeat the year-old assessment <!-- dark.persistence_dark --> | 69% | 0 of 98 | 26 points | 479 |
-| This tool in the dark <!-- dark.dark --> | 67% | 31 of 98 | 26 points | 479 |
-| This tool in the dark, plus conflict <!-- dark.dark_conf --> | 67% | 31 of 98 | 27 points | 479 |
-| This tool in the dark, plus TimesFM <!-- dark.dark_tfm --> | 66% | 26 of 98 | 27 points | 479 |
+| Repeat the year-old assessment <!-- dark_paired.persistence_dark --> | 83% | 0 of 489 | 16 points | 4619 |
+| This tool in the dark <!-- dark_paired.dark --> | 81% | 62 of 489 | 19 points | 4619 |
 
-The 95% ranges below come from a paired bootstrap over assessment dates, in `metrics.json` under `mae_diff_ci`.
+The 95% ranges below come from a paired bootstrap over assessment dates (`mae_diff_ci` in `metrics.json`).
 
 ## What the results show
 
-1. **While monitoring works, the tool does not beat simply repeating the last assessment.** Its average error is 4 points higher (95% range 2 to 6). Food crises persist, so that baseline is strong, and FEWS NET analysts beat both.
-2. **Once monitoring stops, the old assessment loses most of its value.** Its accuracy falls from 86% to 69%, and 98 regions enter a crisis it cannot foresee by definition.
-3. **In the dark, the tool's average error is no different from the year-old assessment** (difference 0 points, 95% range −5 to +5). The two fail in different ways:
-   - The tool foresees 31 of 98 new crises and 43 of 53 recoveries. The year-old assessment foresees none of either.
-   - When the tool calls a crisis it is right 88% of the time, against 78% for the old assessment.
-   - It misses more crises that are already under way: it finds 52% of them, against 66%.
+1. **While monitoring works, the tool does not beat simply repeating the last assessment.** Its average error is 3.8 points higher (95% range 3.0 to 4.6). Food crises persist, so that baseline is strong, and FEWS NET analysts beat both.
+2. **In the dark, the tool is worse on average than the year-old assessment**: 3.2 points higher error (2.2 to 4.3). It fails differently, though:
+   - It foresees 62 of 489 new crises and 216 of 284 recoveries. The year-old assessment foresees none of either.
+   - When it calls a crisis it is right 88% of the time, against 76% for the old assessment.
+   - It finds only 43% of crises already under way, against 65%.
 
-   So it is useful for flagging regions to check first, not for replacing an assessment.
-4. **Conflict data did not help.** Adding UCDP features changed the dark-scenario error by +0.8 points (95% range +0.2 to +1.5). The README's earlier guess that conflict data was the missing input is not supported.
-5. **Remote data alone cannot replace monitoring.** With no assessment at all, accuracy is 64%.
-6. **Google's TimesFM forecasting model did not help, and with no ground data it made the forecast slightly worse.** TimesFM 2.5 (zero-shot, no training) forecast each region's rainfall and cereal prices forward to the target month, and these two forecasts were added as inputs. The variants were fixed before the results were seen.
-   - For 188 of the 479 test cases the price forecast used the national price series, because the region's own series had gaps or was shorter than 24 months.
-   - As a forecast of the drivers themselves it works better than repeating the last value: average error 25.1 against 35.7 points of rainfall-as-%-of-normal (479 cases), and 0.139 against 0.147 for the 12-month log price change (463 cases). These are under `driver_check` in `metrics.json`.
-   - It did not improve the crisis forecast. Against the same model without it, the average error changed by +0.1 points while monitoring works (95% range −0.5 to +0.7), +0.9 points in the dark (−0.1 to +1.8) and +0.6 points with no ground data (+0.1 to +1.1). In the dark it foresaw 26 of 98 new crises, against 31 without it.
-   - Against the baselines: +4.3 points versus repeating the last assessment (2.1 to 6.1), and +0.8 points versus the year-old assessment in the dark (−4.0 to +5.5).
-   - Only the forecast levels were tested. The design also listed "forecast minus last observed value" as an input; it was left out of the pre-registered variants and is not tested.
+   So at best it can flag regions to check first. It does not replace an assessment.
+3. **Rainfall and prices alone cannot replace monitoring.** Without any assessment the average error is 11.6 points higher than repeating the last one (10.1 to 13.2).
+4. **Across 38 countries the dark-scenario result is weaker than in the first 3.** In the earlier Ethiopia, Somalia and South Sudan test the tool tied the year-old assessment (difference 0 points, −5 to +5); here it is 3.2 points behind. While monitoring works it trails the last assessment in both tests.
+
+These results were first computed on all cases, which gave the baseline fewer cases than the model. The like-for-like tables were added after that run. The all-case numbers are in `metrics.json` under `all` and `dark`.
+
+## Earlier 3-country experiments
+
+Before the world version, the model was tested on Ethiopia, Somalia and South Sudan (39 regions, 479 test cases) with two extra kinds of input. Neither helped, and neither is used for the world model. The results are frozen in `results/three_countries/` and can be rebuilt from commit 93b27f6.
+
+| Method | Correct crisis calls | New crises foreseen | Average error | Cases |
+| --- | --- | --- | --- | --- |
+| Assume nothing changes <!-- three_all.persistence --> | 86% | 0 of 40 | 13 points | 479 |
+| This tool <!-- three_all.full --> | 82% | 7 of 40 | 18 points | 479 |
+| This tool plus conflict data <!-- three_all.full_conf --> | 81% | 6 of 40 | 18 points | 479 |
+| This tool plus TimesFM forecasts <!-- three_all.full_tfm --> | 82% | 6 of 40 | 18 points | 479 |
+| FEWS NET analysts' projection <!-- three_all.fews --> | 88% | 16 of 30 | 12 points | 440 |
+| Repeat the year-old assessment <!-- three_dark.persistence_dark --> | 69% | 0 of 98 | 26 points | 479 |
+| This tool in the dark <!-- three_dark.dark --> | 67% | 31 of 98 | 26 points | 479 |
+| In the dark, plus conflict <!-- three_dark.dark_conf --> | 67% | 31 of 98 | 27 points | 479 |
+| In the dark, plus TimesFM <!-- three_dark.dark_tfm --> | 66% | 26 of 98 | 27 points | 479 |
+
+- **Conflict data (UCDP)** changed the dark-scenario error by +0.8 points (95% range +0.2 to +1.5).
+- **Google's TimesFM 2.5** forecast each region's rainfall better than repeating the last value (average error 25.1 against 35.7 points of rainfall as % of normal), but adding its rainfall and price forecasts did not improve the crisis forecast: +0.1 points while monitoring works (−0.5 to +0.7) and +0.9 points in the dark (−0.1 to +1.8). For 188 of the 479 cases its price forecast used the national series. TimesFM's pretraining data was not checked for overlap with these series.
 
 ## How this differs from existing systems
 
 - **FEWS NET and IPC** rely on field teams and analysts. This tool is designed for the case where they are offline.
 - **WFP HungerMap LIVE** uses WFP's own phone surveys. This tool uses only data that nobody has to collect on the ground.
-- **The 2023 Science Advances study on news and food crises** (Balashankar et al.) showed that news text predicts food insecurity. This tool is a small working pipeline in that direction. Its GDELT news features are still being added.
-
-Its claim is limited to what the test above supports. It is a triage aid for regions that have gone dark, and it is measured against what you would otherwise have.
+- **Balashankar et al. (2023, Science Advances)** showed that news text predicts food insecurity. This project did not get news data working; see below.
 
 ## Not done
 
+- News (GDELT) features: the download was rate-limited and the code was removed.
 - AlphaEarth satellite embeddings (Google DeepMind) are designed in `docs/design-google-models.md` but not added. They need an Earth Engine sign-in.
-- TimesFM was pretrained on a large public corpus that was not checked for overlap with these rainfall and price series.
-- GDELT news features: the code is in place (`src/fetch_news.py`, `news_*` variants in `train_model.py`). The download was rate-limited by the API at the time of this commit, so no news results are reported yet.
-- No language-model reading of local press. It could not be back-tested honestly without the historical articles.
 - Regions are admin-1 only. FEWS NET units are finer, so local detail is averaged away.
-- Ethiopia's regions that split from SNNPR after 2020 are merged back into SNNPR to keep one continuous series.
-- UCDP's final GED data (to 2025) is used for past months, while only candidate data would have existed in real time. Candidate data is used for 2026.
+- Region names that changed (for example Burkina Faso's 2025 regions, Ethiopia's regions split from SNNPR) are not linked across the change; history under old names drops out.
+- The world map places regions at the OCHA region centre point. It does not draw region outlines.
 - The model settings were not tuned.
 
 ## Data sources
 
-- FEWS NET Data Warehouse, IPC classifications: `https://fdw.fews.net/api/ipcphase.csv?country_code=ET` (also SO, SS). Ethiopia re-downloaded 23 November 2026 (adds the October 2026 assessment); Somalia and South Sudan downloaded 10 November 2026.
-- WFP food prices on HDX: `wfp-food-prices-for-ethiopia`, `-somalia`, `-south-sudan`. Downloaded 10 November 2026.
-- WFP subnational rainfall indicators on HDX (from CHIRPS): `eth-rainfall-subnational`, `som-`, `ssd-`. Downloaded 10 November 2026.
-- UCDP Georeferenced Event Dataset 26.1 (1989–2025) and UCDP Candidate Events 26.0.1–26.0.9 (January–September 2026), `https://ucdp.uu.se/downloads/`. Downloaded 17 November 2026.
-- geoBoundaries gbOpen ADM1 outlines for ETH, SOM and SSD. Downloaded 17 November 2026.
-- TimesFM 2.5 weights, `google/timesfm-2.5-200m-pytorch` on Hugging Face (Apache-2.0), with the `timesfm` 3.0.2 Python package. Downloaded 23 November 2026.
+All downloaded 24 November 2026 unless noted.
+
+- FEWS NET Data Warehouse, IPC classifications for 39 countries: `https://fdw.fews.net/api/ipcphase.csv?country_code=XX`.
+- WFP subnational rainfall indicators on HDX (from CHIRPS), `<iso3>-rainfall-subnational`, 39 countries.
+- WFP food prices on HDX, `wfp-food-prices-for-<country>`, 36 countries (none found for Côte d'Ivoire, Syria and Venezuela).
+- OCHA administrative boundaries (COD-AB) tables on HDX, `cod-ab-<iso3>`, 38 countries.
+- Natural Earth 1:110m country outlines, v5.1.2 (public domain).
+- 3-country experiments only: UCDP GED 26.1 and Candidate Events 26.0.1–26.0.9 (downloaded 17 November 2026); geoBoundaries ADM1 outlines (17 November 2026); TimesFM 2.5 weights, `google/timesfm-2.5-200m-pytorch` (Apache-2.0, 23 November 2026).
 
 ## Prompt log addition
 

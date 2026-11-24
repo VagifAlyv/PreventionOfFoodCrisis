@@ -1,5 +1,8 @@
 """Forecast each region's monthly drivers to the target month with TimesFM 2.5 (Google Research).
 
+3-country experiment only (results/three_countries/). It runs against the 3-country build_dataset.py of commit 93b27f6, not the world pipeline.
+
+
 For every panel row (region, target T, cutoff k = T - 4 months) this forecasts, from data known
 at k only:
   tfm_r3q        3-month rainfall as % of normal (CHIRPS via WFP) at T

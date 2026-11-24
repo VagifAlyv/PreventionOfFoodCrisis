@@ -1,5 +1,8 @@
 """Monthly organised-violence counts per admin-1 region from UCDP GED.
 
+3-country experiment only (results/three_countries/). It runs against the 3-country build_dataset.py of commit 93b27f6, not the world pipeline.
+
+
 Sources (no account needed):
   data/raw/ucdp/GEDEvent_v26_1.csv            UCDP GED 26.1, final, 1989-2025
   data/raw/ucdp/GEDEvent_v26_01_26_09.csv     UCDP Candidate Events 26.0.1-26.0.9, Jan-Sep 2026

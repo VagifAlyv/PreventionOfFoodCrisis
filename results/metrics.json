@@ -1,445 +1,1555 @@
 {
  "all": {
   "persistence": {
-   "n": 479,
-   "mae": 0.134,
-   "accuracy": 0.862,
-   "precision": 0.905,
-   "recall": 0.861,
-   "f1": 0.882,
-   "onsets": 40,
+   "n": 4921,
+   "mae": 0.097,
+   "accuracy": 0.898,
+   "precision": 0.844,
+   "recall": 0.806,
+   "f1": 0.824,
+   "onsets": 283,
    "onsets_caught": 0,
-   "recoveries": 26,
+   "recoveries": 217,
    "recoveries_caught": 0
   },
   "full": {
-   "n": 479,
-   "mae": 0.176,
-   "accuracy": 0.82,
-   "precision": 0.9,
-   "recall": 0.787,
-   "f1": 0.84,
-   "onsets": 40,
-   "onsets_caught": 7,
-   "recoveries": 26,
-   "recoveries_caught": 12
-  },
-  "full_conf": {
-   "n": 479,
-   "mae": 0.177,
-   "accuracy": 0.814,
-   "precision": 0.896,
-   "recall": 0.78,
-   "f1": 0.834,
-   "onsets": 40,
-   "onsets_caught": 6,
-   "recoveries": 26,
-   "recoveries_caught": 11
+   "n": 5181,
+   "mae": 0.137,
+   "accuracy": 0.888,
+   "precision": 0.911,
+   "recall": 0.675,
+   "f1": 0.775,
+   "onsets": 304,
+   "onsets_caught": 14,
+   "recoveries": 217,
+   "recoveries_caught": 133
   },
   "satellite": {
-   "n": 479,
-   "mae": 0.318,
-   "accuracy": 0.637,
-   "precision": 0.879,
-   "recall": 0.456,
-   "f1": 0.601,
-   "onsets": 40,
-   "onsets_caught": 5,
-   "recoveries": 26,
-   "recoveries_caught": 20
-  },
-  "remote": {
-   "n": 479,
-   "mae": 0.314,
-   "accuracy": 0.641,
-   "precision": 0.876,
-   "recall": 0.467,
-   "f1": 0.609,
-   "onsets": 40,
-   "onsets_caught": 7,
-   "recoveries": 26,
-   "recoveries_caught": 20
-  },
-  "full_tfm": {
-   "n": 479,
-   "mae": 0.177,
-   "accuracy": 0.823,
-   "precision": 0.907,
-   "recall": 0.784,
-   "f1": 0.841,
-   "onsets": 40,
-   "onsets_caught": 6,
-   "recoveries": 26,
-   "recoveries_caught": 14
-  },
-  "remote_tfm": {
-   "n": 479,
-   "mae": 0.32,
-   "accuracy": 0.641,
-   "precision": 0.871,
-   "recall": 0.47,
-   "f1": 0.611,
-   "onsets": 40,
-   "onsets_caught": 4,
-   "recoveries": 26,
-   "recoveries_caught": 20
+   "n": 5181,
+   "mae": 0.211,
+   "accuracy": 0.798,
+   "precision": 0.895,
+   "recall": 0.333,
+   "f1": 0.485,
+   "onsets": 304,
+   "onsets_caught": 17,
+   "recoveries": 217,
+   "recoveries_caught": 198
   },
   "fews": {
-   "n": 440,
-   "mae": 0.119,
-   "accuracy": 0.88,
-   "precision": 0.938,
-   "recall": 0.857,
-   "f1": 0.896,
-   "onsets": 30,
-   "onsets_caught": 16,
-   "recoveries": 24,
-   "recoveries_caught": 16
+   "n": 4486,
+   "mae": 0.065,
+   "accuracy": 0.932,
+   "precision": 0.898,
+   "recall": 0.868,
+   "f1": 0.883,
+   "onsets": 251,
+   "onsets_caught": 176,
+   "recoveries": 185,
+   "recoveries_caught": 136
   }
  },
  "dark": {
   "persistence_dark": {
-   "n": 479,
-   "mae": 0.263,
-   "accuracy": 0.685,
-   "precision": 0.781,
-   "recall": 0.659,
-   "f1": 0.715,
-   "onsets": 98,
+   "n": 4619,
+   "mae": 0.156,
+   "accuracy": 0.833,
+   "precision": 0.761,
+   "recall": 0.649,
+   "f1": 0.701,
+   "onsets": 489,
    "onsets_caught": 0,
-   "recoveries": 53,
+   "recoveries": 284,
    "recoveries_caught": 0
   },
   "dark": {
-   "n": 479,
-   "mae": 0.262,
-   "accuracy": 0.666,
-   "precision": 0.876,
-   "recall": 0.516,
-   "f1": 0.649,
-   "onsets": 98,
-   "onsets_caught": 31,
-   "recoveries": 53,
-   "recoveries_caught": 43
+   "n": 5181,
+   "mae": 0.189,
+   "accuracy": 0.815,
+   "precision": 0.878,
+   "recall": 0.409,
+   "f1": 0.558,
+   "onsets": 573,
+   "onsets_caught": 62,
+   "recoveries": 284,
+   "recoveries_caught": 216
+  }
+ },
+ "paired": {
+  "persistence": {
+   "n": 4921,
+   "mae": 0.097,
+   "accuracy": 0.898,
+   "precision": 0.844,
+   "recall": 0.806,
+   "f1": 0.824,
+   "onsets": 283,
+   "onsets_caught": 0,
+   "recoveries": 217,
+   "recoveries_caught": 0
   },
-  "dark_conf": {
-   "n": 479,
-   "mae": 0.27,
-   "accuracy": 0.67,
-   "precision": 0.886,
-   "recall": 0.516,
-   "f1": 0.652,
-   "onsets": 98,
-   "onsets_caught": 31,
-   "recoveries": 53,
-   "recoveries_caught": 46
+  "full": {
+   "n": 4921,
+   "mae": 0.136,
+   "accuracy": 0.887,
+   "precision": 0.911,
+   "recall": 0.685,
+   "f1": 0.782,
+   "onsets": 283,
+   "onsets_caught": 14,
+   "recoveries": 217,
+   "recoveries_caught": 133
   },
-  "dark_tfm": {
-   "n": 479,
-   "mae": 0.271,
-   "accuracy": 0.66,
-   "precision": 0.856,
-   "recall": 0.519,
-   "f1": 0.646,
-   "onsets": 98,
-   "onsets_caught": 26,
-   "recoveries": 53,
-   "recoveries_caught": 39
+  "satellite": {
+   "n": 4921,
+   "mae": 0.213,
+   "accuracy": 0.792,
+   "precision": 0.896,
+   "recall": 0.338,
+   "f1": 0.491,
+   "onsets": 283,
+   "onsets_caught": 17,
+   "recoveries": 217,
+   "recoveries_caught": 198
+  },
+  "fews": {
+   "n": 4486,
+   "mae": 0.065,
+   "accuracy": 0.932,
+   "precision": 0.898,
+   "recall": 0.868,
+   "f1": 0.883,
+   "onsets": 251,
+   "onsets_caught": 176,
+   "recoveries": 185,
+   "recoveries_caught": 136
+  }
+ },
+ "dark_paired": {
+  "persistence_dark": {
+   "n": 4619,
+   "mae": 0.156,
+   "accuracy": 0.833,
+   "precision": 0.761,
+   "recall": 0.649,
+   "f1": 0.701,
+   "onsets": 489,
+   "onsets_caught": 0,
+   "recoveries": 284,
+   "recoveries_caught": 0
+  },
+  "dark": {
+   "n": 4619,
+   "mae": 0.188,
+   "accuracy": 0.811,
+   "precision": 0.881,
+   "recall": 0.434,
+   "f1": 0.581,
+   "onsets": 489,
+   "onsets_caught": 62,
+   "recoveries": 284,
+   "recoveries_caught": 216
   }
  },
  "common": {
   "persistence": {
-   "n": 440,
-   "mae": 0.126,
-   "accuracy": 0.877,
-   "precision": 0.908,
-   "recall": 0.887,
-   "f1": 0.897,
-   "onsets": 30,
+   "n": 4486,
+   "mae": 0.094,
+   "accuracy": 0.903,
+   "precision": 0.854,
+   "recall": 0.811,
+   "f1": 0.832,
+   "onsets": 251,
    "onsets_caught": 0,
-   "recoveries": 24,
+   "recoveries": 185,
    "recoveries_caught": 0
   },
   "full": {
-   "n": 440,
-   "mae": 0.169,
-   "accuracy": 0.83,
-   "precision": 0.906,
-   "recall": 0.801,
-   "f1": 0.85,
-   "onsets": 30,
-   "onsets_caught": 4,
-   "recoveries": 24,
-   "recoveries_caught": 11
-  },
-  "full_conf": {
-   "n": 440,
-   "mae": 0.17,
-   "accuracy": 0.825,
-   "precision": 0.902,
-   "recall": 0.797,
-   "f1": 0.846,
-   "onsets": 30,
-   "onsets_caught": 4,
-   "recoveries": 24,
-   "recoveries_caught": 10
+   "n": 4486,
+   "mae": 0.133,
+   "accuracy": 0.891,
+   "precision": 0.911,
+   "recall": 0.699,
+   "f1": 0.791,
+   "onsets": 251,
+   "onsets_caught": 13,
+   "recoveries": 185,
+   "recoveries_caught": 106
   },
   "satellite": {
-   "n": 440,
-   "mae": 0.317,
-   "accuracy": 0.645,
-   "precision": 0.904,
-   "recall": 0.462,
-   "f1": 0.612,
-   "onsets": 30,
-   "onsets_caught": 4,
-   "recoveries": 24,
-   "recoveries_caught": 19
-  },
-  "remote": {
-   "n": 440,
-   "mae": 0.313,
-   "accuracy": 0.65,
-   "precision": 0.894,
-   "recall": 0.477,
-   "f1": 0.623,
-   "onsets": 30,
-   "onsets_caught": 6,
-   "recoveries": 24,
-   "recoveries_caught": 19
-  },
-  "full_tfm": {
-   "n": 440,
-   "mae": 0.17,
-   "accuracy": 0.834,
-   "precision": 0.918,
-   "recall": 0.797,
-   "f1": 0.853,
-   "onsets": 30,
-   "onsets_caught": 3,
-   "recoveries": 24,
-   "recoveries_caught": 13
-  },
-  "remote_tfm": {
-   "n": 440,
-   "mae": 0.318,
-   "accuracy": 0.652,
-   "precision": 0.901,
-   "recall": 0.477,
-   "f1": 0.624,
-   "onsets": 30,
-   "onsets_caught": 3,
-   "recoveries": 24,
-   "recoveries_caught": 19
+   "n": 4486,
+   "mae": 0.213,
+   "accuracy": 0.794,
+   "precision": 0.903,
+   "recall": 0.342,
+   "f1": 0.496,
+   "onsets": 251,
+   "onsets_caught": 11,
+   "recoveries": 185,
+   "recoveries_caught": 168
   },
   "fews": {
-   "n": 440,
-   "mae": 0.119,
-   "accuracy": 0.88,
-   "precision": 0.938,
-   "recall": 0.857,
-   "f1": 0.896,
-   "onsets": 30,
-   "onsets_caught": 16,
-   "recoveries": 24,
-   "recoveries_caught": 16
+   "n": 4486,
+   "mae": 0.065,
+   "accuracy": 0.932,
+   "precision": 0.898,
+   "recall": 0.868,
+   "f1": 0.883,
+   "onsets": 251,
+   "onsets_caught": 176,
+   "recoveries": 185,
+   "recoveries_caught": 136
   }
  },
  "by_country": {
+  "Afghanistan": {
+   "persistence": {
+    "n": 340,
+    "mae": 0.233,
+    "accuracy": 0.771,
+    "precision": 0.672,
+    "recall": 0.683,
+    "f1": 0.678,
+    "onsets": 38,
+    "onsets_caught": 0,
+    "recoveries": 40,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 340,
+    "mae": 0.313,
+    "accuracy": 0.8,
+    "precision": 0.755,
+    "recall": 0.642,
+    "f1": 0.694,
+    "onsets": 38,
+    "onsets_caught": 0,
+    "recoveries": 40,
+    "recoveries_caught": 18
+   },
+   "satellite": {
+    "n": 340,
+    "mae": 0.384,
+    "accuracy": 0.644,
+    "precision": 0.474,
+    "recall": 0.075,
+    "f1": 0.129,
+    "onsets": 38,
+    "onsets_caught": 1,
+    "recoveries": 40,
+    "recoveries_caught": 40
+   },
+   "fews": {
+    "n": 272,
+    "mae": 0.121,
+    "accuracy": 0.882,
+    "precision": 0.777,
+    "recall": 0.899,
+    "f1": 0.833,
+    "onsets": 22,
+    "onsets_caught": 18,
+    "recoveries": 38,
+    "recoveries_caught": 28
+   }
+  },
+  "Angola": {
+   "persistence": {
+    "n": 16,
+    "mae": 0.219,
+    "accuracy": 0.688,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 32,
+    "mae": 0.232,
+    "accuracy": 0.844,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 32,
+    "mae": 0.242,
+    "accuracy": 0.812,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 16,
+    "mae": 0.021,
+    "accuracy": 0.938,
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.889,
+    "onsets": 5,
+    "onsets_caught": 4,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Benin": {
+   "persistence": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 12,
+    "mae": 0.05,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 12,
+    "mae": 0.047,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Burkina Faso": {
+   "persistence": {
+    "n": 221,
+    "mae": 0.092,
+    "accuracy": 0.869,
+    "precision": 0.688,
+    "recall": 0.702,
+    "f1": 0.695,
+    "onsets": 14,
+    "onsets_caught": 0,
+    "recoveries": 15,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 221,
+    "mae": 0.118,
+    "accuracy": 0.869,
+    "precision": 0.846,
+    "recall": 0.468,
+    "f1": 0.603,
+    "onsets": 14,
+    "onsets_caught": 0,
+    "recoveries": 15,
+    "recoveries_caught": 11
+   },
+   "satellite": {
+    "n": 221,
+    "mae": 0.205,
+    "accuracy": 0.787,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 14,
+    "onsets_caught": 0,
+    "recoveries": 15,
+    "recoveries_caught": 15
+   },
+   "fews": {
+    "n": 204,
+    "mae": 0.106,
+    "accuracy": 0.873,
+    "precision": 0.652,
+    "recall": 0.935,
+    "f1": 0.768,
+    "onsets": 14,
+    "onsets_caught": 13,
+    "recoveries": 14,
+    "recoveries_caught": 11
+   }
+  },
+  "Burundi": {
+   "persistence": {
+    "n": 65,
+    "mae": 0.015,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 65,
+    "mae": 0.021,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 65,
+    "mae": 0.017,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 60,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Cameroon": {
+   "persistence": {
+    "n": 130,
+    "mae": 0.062,
+    "accuracy": 0.954,
+    "precision": 0.87,
+    "recall": 0.87,
+    "f1": 0.87,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 130,
+    "mae": 0.11,
+    "accuracy": 0.954,
+    "precision": 0.905,
+    "recall": 0.826,
+    "f1": 0.864,
+    "onsets": 3,
+    "onsets_caught": 1,
+    "recoveries": 3,
+    "recoveries_caught": 1
+   },
+   "satellite": {
+    "n": 130,
+    "mae": 0.272,
+    "accuracy": 0.823,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 3
+   },
+   "fews": {
+    "n": 120,
+    "mae": 0.061,
+    "accuracy": 0.925,
+    "precision": 0.833,
+    "recall": 0.714,
+    "f1": 0.769,
+    "onsets": 3,
+    "onsets_caught": 3,
+    "recoveries": 3,
+    "recoveries_caught": 0
+   }
+  },
+  "Central African Republic": {
+   "persistence": {
+    "n": 40,
+    "mae": 0.255,
+    "accuracy": 0.7,
+    "precision": 0.7,
+    "recall": 0.7,
+    "f1": 0.7,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 6,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 60,
+    "mae": 0.384,
+    "accuracy": 0.75,
+    "precision": 0.875,
+    "recall": 0.519,
+    "f1": 0.651,
+    "onsets": 13,
+    "onsets_caught": 0,
+    "recoveries": 6,
+    "recoveries_caught": 4
+   },
+   "satellite": {
+    "n": 60,
+    "mae": 0.458,
+    "accuracy": 0.467,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 13,
+    "onsets_caught": 0,
+    "recoveries": 6,
+    "recoveries_caught": 4
+   },
+   "fews": {
+    "n": 40,
+    "mae": 0.088,
+    "accuracy": 0.9,
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.889,
+    "onsets": 6,
+    "onsets_caught": 2,
+    "recoveries": 6,
+    "recoveries_caught": 6
+   }
+  },
+  "Chad": {
+   "persistence": {
+    "n": 299,
+    "mae": 0.107,
+    "accuracy": 0.91,
+    "precision": 0.841,
+    "recall": 0.757,
+    "f1": 0.797,
+    "onsets": 17,
+    "onsets_caught": 0,
+    "recoveries": 10,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 299,
+    "mae": 0.176,
+    "accuracy": 0.856,
+    "precision": 1.0,
+    "recall": 0.386,
+    "f1": 0.557,
+    "onsets": 17,
+    "onsets_caught": 0,
+    "recoveries": 10,
+    "recoveries_caught": 10
+   },
+   "satellite": {
+    "n": 299,
+    "mae": 0.232,
+    "accuracy": 0.766,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 17,
+    "onsets_caught": 0,
+    "recoveries": 10,
+    "recoveries_caught": 10
+   },
+   "fews": {
+    "n": 276,
+    "mae": 0.082,
+    "accuracy": 0.928,
+    "precision": 0.881,
+    "recall": 0.8,
+    "f1": 0.839,
+    "onsets": 17,
+    "onsets_caught": 10,
+    "recoveries": 7,
+    "recoveries_caught": 4
+   }
+  },
+  "Colombia": {
+   "persistence": {
+    "n": 31,
+    "mae": 0.065,
+    "accuracy": 0.935,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 62,
+    "mae": 0.142,
+    "accuracy": 0.935,
+    "precision": 1.0,
+    "recall": 0.333,
+    "f1": 0.5,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 62,
+    "mae": 0.128,
+    "accuracy": 0.903,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 31,
+    "mae": 0.065,
+    "accuracy": 0.935,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Côte d’Ivoire": {
+   "persistence": {
+    "n": 33,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 66,
+    "mae": 0.057,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 66,
+    "mae": 0.055,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 33,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Democratic Republic of the Congo": {
+   "persistence": {
+    "n": 268,
+    "mae": 0.049,
+    "accuracy": 0.966,
+    "precision": 0.9,
+    "recall": 0.878,
+    "f1": 0.889,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 278,
+    "mae": 0.101,
+    "accuracy": 0.953,
+    "precision": 0.967,
+    "recall": 0.707,
+    "f1": 0.817,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 3
+   },
+   "satellite": {
+    "n": 278,
+    "mae": 0.237,
+    "accuracy": 0.853,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 4
+   },
+   "fews": {
+    "n": 242,
+    "mae": 0.042,
+    "accuracy": 0.979,
+    "precision": 0.921,
+    "recall": 0.946,
+    "f1": 0.933,
+    "onsets": 3,
+    "onsets_caught": 2,
+    "recoveries": 4,
+    "recoveries_caught": 3
+   }
+  },
+  "El Salvador": {
+   "persistence": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 14,
+    "mae": 0.073,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 14,
+    "mae": 0.138,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
   "Ethiopia": {
    "persistence": {
-    "n": 143,
-    "mae": 0.081,
-    "accuracy": 0.979,
-    "precision": 0.929,
-    "recall": 0.963,
-    "f1": 0.945,
+    "n": 182,
+    "mae": 0.094,
+    "accuracy": 0.962,
+    "precision": 0.867,
+    "recall": 0.897,
+    "f1": 0.881,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 182,
+    "mae": 0.112,
+    "accuracy": 0.929,
+    "precision": 0.808,
+    "recall": 0.724,
+    "f1": 0.764,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 3
+   },
+   "satellite": {
+    "n": 182,
+    "mae": 0.208,
+    "accuracy": 0.824,
+    "precision": 0.2,
+    "recall": 0.034,
+    "f1": 0.059,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 4
+   },
+   "fews": {
+    "n": 168,
+    "mae": 0.063,
+    "accuracy": 0.964,
+    "precision": 0.893,
+    "recall": 0.893,
+    "f1": 0.893,
+    "onsets": 3,
+    "onsets_caught": 2,
+    "recoveries": 4,
+    "recoveries_caught": 2
+   }
+  },
+  "Guatemala": {
+   "persistence": {
+    "n": 286,
+    "mae": 0.137,
+    "accuracy": 0.797,
+    "precision": 0.706,
+    "recall": 0.645,
+    "f1": 0.674,
+    "onsets": 33,
+    "onsets_caught": 0,
+    "recoveries": 25,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 286,
+    "mae": 0.191,
+    "accuracy": 0.72,
+    "precision": 0.71,
+    "recall": 0.237,
+    "f1": 0.355,
+    "onsets": 33,
+    "onsets_caught": 4,
+    "recoveries": 25,
+    "recoveries_caught": 16
+   },
+   "satellite": {
+    "n": 286,
+    "mae": 0.281,
+    "accuracy": 0.675,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 33,
+    "onsets_caught": 0,
+    "recoveries": 25,
+    "recoveries_caught": 25
+   },
+   "fews": {
+    "n": 264,
+    "mae": 0.091,
+    "accuracy": 0.864,
+    "precision": 0.786,
+    "recall": 0.786,
+    "f1": 0.786,
+    "onsets": 33,
+    "onsets_caught": 33,
+    "recoveries": 24,
+    "recoveries_caught": 18
+   }
+  },
+  "Haiti": {
+   "persistence": {
+    "n": 130,
+    "mae": 0.078,
+    "accuracy": 0.954,
+    "precision": 0.992,
+    "recall": 0.96,
+    "f1": 0.975,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 130,
+    "mae": 0.128,
+    "accuracy": 0.862,
+    "precision": 0.957,
+    "recall": 0.895,
+    "f1": 0.925,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 130,
+    "mae": 0.35,
+    "accuracy": 0.354,
+    "precision": 0.976,
+    "recall": 0.331,
+    "f1": 0.494,
+    "onsets": 5,
+    "onsets_caught": 1,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 120,
+    "mae": 0.119,
+    "accuracy": 0.858,
+    "precision": 1.0,
+    "recall": 0.852,
+    "f1": 0.92,
+    "onsets": 5,
+    "onsets_caught": 1,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Honduras": {
+   "persistence": {
+    "n": 36,
+    "mae": 0.125,
+    "accuracy": 0.889,
+    "precision": 1.0,
+    "recall": 0.429,
+    "f1": 0.6,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 54,
+    "mae": 0.137,
+    "accuracy": 0.889,
+    "precision": 1.0,
+    "recall": 0.143,
+    "f1": 0.25,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 54,
+    "mae": 0.199,
+    "accuracy": 0.87,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 36,
+    "mae": 0.139,
+    "accuracy": 0.861,
+    "precision": 1.0,
+    "recall": 0.286,
+    "f1": 0.444,
+    "onsets": 4,
+    "onsets_caught": 2,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Kenya": {
+   "persistence": {
+    "n": 611,
+    "mae": 0.055,
+    "accuracy": 0.948,
+    "precision": 0.835,
+    "recall": 0.835,
+    "f1": 0.835,
+    "onsets": 16,
+    "onsets_caught": 0,
+    "recoveries": 16,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 611,
+    "mae": 0.105,
+    "accuracy": 0.928,
+    "precision": 0.835,
+    "recall": 0.68,
+    "f1": 0.75,
+    "onsets": 16,
+    "onsets_caught": 0,
+    "recoveries": 16,
+    "recoveries_caught": 3
+   },
+   "satellite": {
+    "n": 611,
+    "mae": 0.187,
+    "accuracy": 0.841,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 16,
+    "onsets_caught": 0,
+    "recoveries": 16,
+    "recoveries_caught": 16
+   },
+   "fews": {
+    "n": 564,
+    "mae": 0.038,
+    "accuracy": 0.963,
+    "precision": 0.951,
+    "recall": 0.819,
+    "f1": 0.88,
+    "onsets": 14,
+    "onsets_caught": 10,
+    "recoveries": 16,
+    "recoveries_caught": 14
+   }
+  },
+  "Lebanon": {
+   "persistence": {
+    "n": 16,
+    "mae": 0.448,
+    "accuracy": 0.5,
+    "precision": 0.75,
+    "recall": 0.5,
+    "f1": 0.6,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 24,
+    "mae": 0.368,
+    "accuracy": 0.583,
+    "precision": 1.0,
+    "recall": 0.231,
+    "f1": 0.375,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 2
+   },
+   "satellite": {
+    "n": 24,
+    "mae": 0.452,
+    "accuracy": 0.458,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 2
+   },
+   "fews": {
+    "n": 16,
+    "mae": 0.333,
+    "accuracy": 0.625,
+    "precision": 0.8,
+    "recall": 0.667,
+    "f1": 0.727,
+    "onsets": 6,
+    "onsets_caught": 2,
+    "recoveries": 2,
+    "recoveries_caught": 0
+   }
+  },
+  "Madagascar": {
+   "persistence": {
+    "n": 299,
+    "mae": 0.05,
+    "accuracy": 0.967,
+    "precision": 0.429,
+    "recall": 0.333,
+    "f1": 0.375,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 299,
+    "mae": 0.061,
+    "accuracy": 0.973,
+    "precision": 0.667,
+    "recall": 0.222,
+    "f1": 0.333,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 3
+   },
+   "satellite": {
+    "n": 299,
+    "mae": 0.072,
+    "accuracy": 0.97,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 4,
+    "recoveries_caught": 4
+   },
+   "fews": {
+    "n": 276,
+    "mae": 0.041,
+    "accuracy": 0.957,
+    "precision": 0.421,
+    "recall": 0.889,
+    "f1": 0.571,
+    "onsets": 6,
+    "onsets_caught": 5,
+    "recoveries": 4,
+    "recoveries_caught": 2
+   }
+  },
+  "Malawi": {
+   "persistence": {
+    "n": 39,
+    "mae": 0.133,
+    "accuracy": 0.846,
+    "precision": 0.25,
+    "recall": 0.25,
+    "f1": 0.25,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 39,
+    "mae": 0.123,
+    "accuracy": 0.923,
+    "precision": 1.0,
+    "recall": 0.25,
+    "f1": 0.4,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 3
+   },
+   "satellite": {
+    "n": 39,
+    "mae": 0.175,
+    "accuracy": 0.897,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 3
+   },
+   "fews": {
+    "n": 36,
+    "mae": 0.129,
+    "accuracy": 0.833,
+    "precision": 0.333,
+    "recall": 0.5,
+    "f1": 0.4,
+    "onsets": 3,
+    "onsets_caught": 1,
+    "recoveries": 2,
+    "recoveries_caught": 1
+   }
+  },
+  "Mali": {
+   "persistence": {
+    "n": 128,
+    "mae": 0.045,
+    "accuracy": 0.977,
+    "precision": 0.667,
+    "recall": 0.8,
+    "f1": 0.727,
     "onsets": 1,
     "onsets_caught": 0,
     "recoveries": 2,
     "recoveries_caught": 0
    },
    "full": {
-    "n": 143,
-    "mae": 0.109,
-    "accuracy": 0.923,
-    "precision": 0.735,
-    "recall": 0.926,
-    "f1": 0.82,
-    "onsets": 1,
+    "n": 139,
+    "mae": 0.086,
+    "accuracy": 0.957,
+    "precision": 0.75,
+    "recall": 0.375,
+    "f1": 0.5,
+    "onsets": 4,
     "onsets_caught": 0,
     "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "full_conf": {
-    "n": 143,
-    "mae": 0.107,
-    "accuracy": 0.916,
-    "precision": 0.727,
-    "recall": 0.889,
-    "f1": 0.8,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 0
+    "recoveries_caught": 2
    },
    "satellite": {
-    "n": 143,
-    "mae": 0.245,
-    "accuracy": 0.755,
-    "precision": 0.0,
+    "n": 139,
+    "mae": 0.099,
+    "accuracy": 0.942,
+    "precision": null,
     "recall": 0.0,
     "f1": 0.0,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 2
-   },
-   "remote": {
-    "n": 143,
-    "mae": 0.229,
-    "accuracy": 0.79,
-    "precision": 0.333,
-    "recall": 0.111,
-    "f1": 0.167,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 2
-   },
-   "full_tfm": {
-    "n": 143,
-    "mae": 0.11,
-    "accuracy": 0.923,
-    "precision": 0.735,
-    "recall": 0.926,
-    "f1": 0.82,
-    "onsets": 1,
-    "onsets_caught": 0,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "remote_tfm": {
-    "n": 143,
-    "mae": 0.239,
-    "accuracy": 0.79,
-    "precision": 0.385,
-    "recall": 0.185,
-    "f1": 0.25,
-    "onsets": 1,
+    "onsets": 4,
     "onsets_caught": 0,
     "recoveries": 2,
     "recoveries_caught": 2
    },
    "fews": {
-    "n": 132,
-    "mae": 0.053,
-    "accuracy": 0.97,
-    "precision": 0.923,
-    "recall": 0.923,
-    "f1": 0.923,
+    "n": 119,
+    "mae": 0.015,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 2,
+    "recoveries_caught": 2
+   }
+  },
+  "Mozambique": {
+   "persistence": {
+    "n": 130,
+    "mae": 0.1,
+    "accuracy": 0.885,
+    "precision": 0.111,
+    "recall": 0.125,
+    "f1": 0.118,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 8,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 130,
+    "mae": 0.111,
+    "accuracy": 0.931,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 8,
+    "recoveries_caught": 7
+   },
+   "satellite": {
+    "n": 130,
+    "mae": 0.138,
+    "accuracy": 0.938,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 8,
+    "recoveries_caught": 8
+   },
+   "fews": {
+    "n": 120,
+    "mae": 0.07,
+    "accuracy": 0.958,
+    "precision": 0.583,
+    "recall": 1.0,
+    "f1": 0.737,
+    "onsets": 6,
+    "onsets_caught": 6,
+    "recoveries": 5,
+    "recoveries_caught": 3
+   }
+  },
+  "Nepal": {
+   "persistence": {
+    "n": 7,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 14,
+    "mae": 0.032,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 14,
+    "mae": 0.054,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 7,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Niger": {
+   "persistence": {
+    "n": 104,
+    "mae": 0.043,
+    "accuracy": 0.962,
+    "precision": 0.944,
+    "recall": 0.85,
+    "f1": 0.895,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 104,
+    "mae": 0.105,
+    "accuracy": 0.856,
+    "precision": 0.857,
+    "recall": 0.3,
+    "f1": 0.444,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 104,
+    "mae": 0.173,
+    "accuracy": 0.808,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 1
+   },
+   "fews": {
+    "n": 96,
+    "mae": 0.043,
+    "accuracy": 0.958,
+    "precision": 0.938,
+    "recall": 0.833,
+    "f1": 0.882,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   }
+  },
+  "Nigeria": {
+   "persistence": {
+    "n": 481,
+    "mae": 0.057,
+    "accuracy": 0.921,
+    "precision": 0.587,
+    "recall": 0.587,
+    "f1": 0.587,
+    "onsets": 19,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 481,
+    "mae": 0.078,
+    "accuracy": 0.936,
+    "precision": 0.8,
+    "recall": 0.435,
+    "f1": 0.563,
+    "onsets": 19,
+    "onsets_caught": 1,
+    "recoveries": 19,
+    "recoveries_caught": 15
+   },
+   "satellite": {
+    "n": 481,
+    "mae": 0.106,
+    "accuracy": 0.904,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 19,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 19
+   },
+   "fews": {
+    "n": 444,
+    "mae": 0.021,
+    "accuracy": 0.975,
+    "precision": 0.902,
+    "recall": 0.841,
+    "f1": 0.871,
+    "onsets": 19,
+    "onsets_caught": 12,
+    "recoveries": 19,
+    "recoveries_caught": 16
+   }
+  },
+  "Pakistan": {
+   "persistence": {
+    "n": 7,
+    "mae": 0.07,
+    "accuracy": 0.857,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "onsets": 1,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 14,
+    "mae": 0.161,
+    "accuracy": 0.857,
+    "precision": 1.0,
+    "recall": 0.333,
+    "f1": 0.5,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 14,
+    "mae": 0.242,
+    "accuracy": 0.786,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 7,
+    "mae": 0.158,
+    "accuracy": 0.714,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.667,
     "onsets": 1,
     "onsets_caught": 1,
-    "recoveries": 2,
+    "recoveries": 0,
     "recoveries_caught": 0
    }
   },
   "Somalia": {
    "persistence": {
-    "n": 216,
-    "mae": 0.207,
-    "accuracy": 0.731,
-    "precision": 0.829,
-    "recall": 0.748,
-    "f1": 0.787,
-    "onsets": 36,
+    "n": 221,
+    "mae": 0.192,
+    "accuracy": 0.769,
+    "precision": 0.871,
+    "recall": 0.8,
+    "f1": 0.834,
+    "onsets": 32,
     "onsets_caught": 0,
-    "recoveries": 22,
+    "recoveries": 19,
     "recoveries_caught": 0
    },
    "full": {
-    "n": 216,
-    "mae": 0.264,
-    "accuracy": 0.681,
-    "precision": 0.87,
-    "recall": 0.608,
-    "f1": 0.716,
-    "onsets": 36,
-    "onsets_caught": 6,
-    "recoveries": 22,
-    "recoveries_caught": 12
-   },
-   "full_conf": {
-    "n": 216,
-    "mae": 0.265,
-    "accuracy": 0.676,
-    "precision": 0.861,
-    "recall": 0.608,
-    "f1": 0.713,
-    "onsets": 36,
-    "onsets_caught": 5,
-    "recoveries": 22,
-    "recoveries_caught": 11
+    "n": 221,
+    "mae": 0.243,
+    "accuracy": 0.692,
+    "precision": 0.883,
+    "recall": 0.662,
+    "f1": 0.757,
+    "onsets": 32,
+    "onsets_caught": 2,
+    "recoveries": 19,
+    "recoveries_caught": 5
    },
    "satellite": {
-    "n": 216,
-    "mae": 0.359,
-    "accuracy": 0.481,
-    "precision": 0.844,
-    "recall": 0.266,
-    "f1": 0.404,
-    "onsets": 36,
-    "onsets_caught": 2,
-    "recoveries": 22,
-    "recoveries_caught": 18
-   },
-   "remote": {
-    "n": 216,
-    "mae": 0.35,
-    "accuracy": 0.486,
-    "precision": 0.808,
-    "recall": 0.294,
-    "f1": 0.431,
-    "onsets": 36,
-    "onsets_caught": 4,
-    "recoveries": 22,
-    "recoveries_caught": 18
-   },
-   "full_tfm": {
-    "n": 216,
-    "mae": 0.263,
-    "accuracy": 0.69,
-    "precision": 0.888,
-    "recall": 0.608,
-    "f1": 0.722,
-    "onsets": 36,
-    "onsets_caught": 4,
-    "recoveries": 22,
-    "recoveries_caught": 14
-   },
-   "remote_tfm": {
-    "n": 216,
-    "mae": 0.356,
-    "accuracy": 0.477,
-    "precision": 0.812,
-    "recall": 0.273,
-    "f1": 0.408,
-    "onsets": 36,
-    "onsets_caught": 1,
-    "recoveries": 22,
-    "recoveries_caught": 18
+    "n": 221,
+    "mae": 0.296,
+    "accuracy": 0.575,
+    "precision": 0.775,
+    "recall": 0.581,
+    "f1": 0.664,
+    "onsets": 32,
+    "onsets_caught": 11,
+    "recoveries": 19,
+    "recoveries_caught": 8
    },
    "fews": {
-    "n": 198,
-    "mae": 0.197,
-    "accuracy": 0.778,
-    "precision": 0.893,
-    "recall": 0.758,
-    "f1": 0.82,
-    "onsets": 26,
-    "onsets_caught": 13,
-    "recoveries": 21,
-    "recoveries_caught": 15
+    "n": 204,
+    "mae": 0.189,
+    "accuracy": 0.789,
+    "precision": 0.934,
+    "recall": 0.765,
+    "f1": 0.841,
+    "onsets": 23,
+    "onsets_caught": 12,
+    "recoveries": 18,
+    "recoveries_caught": 14
    }
   },
   "South Sudan": {
@@ -457,7 +1567,7 @@
    },
    "full": {
     "n": 120,
-    "mae": 0.097,
+    "mae": 0.084,
     "accuracy": 0.95,
     "precision": 0.974,
     "recall": 0.974,
@@ -467,63 +1577,15 @@
     "recoveries": 2,
     "recoveries_caught": 0
    },
-   "full_conf": {
-    "n": 120,
-    "mae": 0.104,
-    "accuracy": 0.942,
-    "precision": 0.974,
-    "recall": 0.966,
-    "f1": 0.97,
-    "onsets": 3,
-    "onsets_caught": 1,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
    "satellite": {
     "n": 120,
-    "mae": 0.331,
-    "accuracy": 0.775,
-    "precision": 0.969,
-    "recall": 0.795,
-    "f1": 0.873,
-    "onsets": 3,
-    "onsets_caught": 3,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "remote": {
-    "n": 120,
-    "mae": 0.352,
-    "accuracy": 0.742,
-    "precision": 0.967,
-    "recall": 0.761,
-    "f1": 0.852,
-    "onsets": 3,
-    "onsets_caught": 3,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "full_tfm": {
-    "n": 120,
-    "mae": 0.102,
-    "accuracy": 0.942,
-    "precision": 0.974,
-    "recall": 0.966,
-    "f1": 0.97,
+    "mae": 0.294,
+    "accuracy": 0.858,
+    "precision": 0.972,
+    "recall": 0.88,
+    "f1": 0.924,
     "onsets": 3,
     "onsets_caught": 2,
-    "recoveries": 2,
-    "recoveries_caught": 0
-   },
-   "remote_tfm": {
-    "n": 120,
-    "mae": 0.353,
-    "accuracy": 0.758,
-    "precision": 0.968,
-    "recall": 0.778,
-    "f1": 0.863,
-    "onsets": 3,
-    "onsets_caught": 3,
     "recoveries": 2,
     "recoveries_caught": 0
    },
@@ -539,107 +1601,1209 @@
     "recoveries": 1,
     "recoveries_caught": 1
    }
-  }
- },
- "dark_by_country": {
-  "Ethiopia": {
-   "persistence_dark": {
-    "n": 143,
-    "mae": 0.126,
-    "accuracy": 0.93,
-    "precision": 0.793,
-    "recall": 0.852,
-    "f1": 0.821,
-    "onsets": 4,
+  },
+  "Sri Lanka": {
+   "persistence": {
+    "n": 9,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
     "onsets_caught": 0,
-    "recoveries": 6,
+    "recoveries": 0,
     "recoveries_caught": 0
    },
-   "dark": {
-    "n": 143,
-    "mae": 0.19,
-    "accuracy": 0.79,
-    "precision": 0.4,
-    "recall": 0.222,
-    "f1": 0.286,
-    "onsets": 4,
+   "full": {
+    "n": 18,
+    "mae": 0.094,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
     "onsets_caught": 0,
-    "recoveries": 6,
-    "recoveries_caught": 3
+    "recoveries": 0,
+    "recoveries_caught": 0
    },
-   "dark_conf": {
-    "n": 143,
-    "mae": 0.202,
-    "accuracy": 0.769,
-    "precision": 0.2,
-    "recall": 0.074,
-    "f1": 0.108,
-    "onsets": 4,
+   "satellite": {
+    "n": 18,
+    "mae": 0.093,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
     "onsets_caught": 0,
-    "recoveries": 6,
-    "recoveries_caught": 5
+    "recoveries": 0,
+    "recoveries_caught": 0
    },
-   "dark_tfm": {
-    "n": 143,
-    "mae": 0.194,
-    "accuracy": 0.762,
-    "precision": 0.294,
-    "recall": 0.185,
-    "f1": 0.227,
-    "onsets": 4,
+   "fews": {
+    "n": 9,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
     "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Sudan": {
+   "persistence": {
+    "n": 198,
+    "mae": 0.164,
+    "accuracy": 0.778,
+    "precision": 0.891,
+    "recall": 0.793,
+    "f1": 0.839,
+    "onsets": 30,
+    "onsets_caught": 0,
+    "recoveries": 14,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 198,
+    "mae": 0.206,
+    "accuracy": 0.788,
+    "precision": 0.964,
+    "recall": 0.738,
+    "f1": 0.836,
+    "onsets": 30,
+    "onsets_caught": 5,
+    "recoveries": 14,
+    "recoveries_caught": 10
+   },
+   "satellite": {
+    "n": 198,
+    "mae": 0.487,
+    "accuracy": 0.414,
+    "precision": 0.914,
+    "recall": 0.221,
+    "f1": 0.356,
+    "onsets": 30,
+    "onsets_caught": 2,
+    "recoveries": 14,
+    "recoveries_caught": 11
+   },
+   "fews": {
+    "n": 162,
+    "mae": 0.137,
+    "accuracy": 0.833,
+    "precision": 0.938,
+    "recall": 0.841,
+    "f1": 0.887,
+    "onsets": 29,
+    "onsets_caught": 14,
     "recoveries": 6,
     "recoveries_caught": 2
    }
   },
-  "Somalia": {
-   "persistence_dark": {
-    "n": 216,
-    "mae": 0.459,
-    "accuracy": 0.375,
-    "precision": 0.542,
-    "recall": 0.364,
-    "f1": 0.435,
-    "onsets": 91,
+  "Syria": {
+   "persistence": {
+    "n": 16,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
     "onsets_caught": 0,
-    "recoveries": 44,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 24,
+    "mae": 0.391,
+    "accuracy": 0.792,
+    "precision": 1.0,
+    "recall": 0.667,
+    "f1": 0.8,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 24,
+    "mae": 0.549,
+    "accuracy": 0.458,
+    "precision": 0.625,
+    "recall": 0.333,
+    "f1": 0.435,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 16,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Togo": {
+   "persistence": {
+    "n": 5,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 10,
+    "mae": 0.052,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 10,
+    "mae": 0.037,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 5,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Uganda": {
+   "persistence": {
+    "n": 44,
+    "mae": 0.011,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 44,
+    "mae": 0.021,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 44,
+    "mae": 0.035,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 40,
+    "mae": 0.008,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Ukraine": {
+   "persistence": {
+    "n": 26,
+    "mae": 0.019,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 52,
+    "mae": 0.119,
+    "accuracy": 0.962,
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 52,
+    "mae": 0.137,
+    "accuracy": 0.923,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 2,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 26,
+    "mae": 0.011,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Venezuela": {
+   "persistence": {
+    "n": 25,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 50,
+    "mae": 0.114,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 50,
+    "mae": 0.083,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 25,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Yemen": {
+   "persistence": {
+    "n": 208,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 208,
+    "mae": 0.013,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 208,
+    "mae": 0.041,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 192,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Zambia": {
+   "persistence": {
+    "n": 20,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 20,
+    "mae": 0.031,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "satellite": {
+    "n": 20,
+    "mae": 0.032,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "fews": {
+    "n": 10,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Zimbabwe": {
+   "persistence": {
+    "n": 130,
+    "mae": 0.329,
+    "accuracy": 0.692,
+    "precision": 0.296,
+    "recall": 0.276,
+    "f1": 0.286,
+    "onsets": 21,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 0
+   },
+   "full": {
+    "n": 130,
+    "mae": 0.246,
+    "accuracy": 0.792,
+    "precision": 0.667,
+    "recall": 0.138,
+    "f1": 0.229,
+    "onsets": 21,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 17
+   },
+   "satellite": {
+    "n": 130,
+    "mae": 0.225,
+    "accuracy": 0.769,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 21,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 19
+   },
+   "fews": {
+    "n": 120,
+    "mae": 0.023,
+    "accuracy": 0.983,
+    "precision": 0.935,
+    "recall": 1.0,
+    "f1": 0.967,
+    "onsets": 21,
+    "onsets_caught": 21,
+    "recoveries": 9,
+    "recoveries_caught": 9
+   }
+  }
+ },
+ "dark_by_country": {
+  "Afghanistan": {
+   "persistence_dark": {
+    "n": 340,
+    "mae": 0.283,
+    "accuracy": 0.724,
+    "precision": 0.63,
+    "recall": 0.525,
+    "f1": 0.573,
+    "onsets": 57,
+    "onsets_caught": 0,
+    "recoveries": 37,
     "recoveries_caught": 0
    },
    "dark": {
-    "n": 216,
-    "mae": 0.363,
-    "accuracy": 0.463,
+    "n": 340,
+    "mae": 0.359,
+    "accuracy": 0.715,
+    "precision": 0.725,
+    "recall": 0.308,
+    "f1": 0.433,
+    "onsets": 57,
+    "onsets_caught": 7,
+    "recoveries": 37,
+    "recoveries_caught": 25
+   }
+  },
+  "Angola": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 32,
+    "mae": 0.241,
+    "accuracy": 0.781,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Benin": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 12,
+    "mae": 0.03,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Burkina Faso": {
+   "persistence_dark": {
+    "n": 221,
+    "mae": 0.155,
+    "accuracy": 0.796,
+    "precision": 0.525,
+    "recall": 0.447,
+    "f1": 0.483,
+    "onsets": 26,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 221,
+    "mae": 0.205,
+    "accuracy": 0.783,
+    "precision": 0.462,
+    "recall": 0.128,
+    "f1": 0.2,
+    "onsets": 26,
+    "onsets_caught": 0,
+    "recoveries": 19,
+    "recoveries_caught": 12
+   }
+  },
+  "Burundi": {
+   "persistence_dark": {
+    "n": 65,
+    "mae": 0.01,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 65,
+    "mae": 0.021,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Cameroon": {
+   "persistence_dark": {
+    "n": 130,
+    "mae": 0.079,
+    "accuracy": 0.938,
+    "precision": 0.857,
+    "recall": 0.783,
+    "f1": 0.818,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 130,
+    "mae": 0.168,
+    "accuracy": 0.869,
     "precision": 0.8,
-    "recall": 0.252,
-    "f1": 0.383,
-    "onsets": 91,
-    "onsets_caught": 29,
-    "recoveries": 44,
-    "recoveries_caught": 40
+    "recall": 0.348,
+    "f1": 0.485,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 3,
+    "recoveries_caught": 1
+   }
+  },
+  "Central African Republic": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
    },
-   "dark_conf": {
-    "n": 216,
-    "mae": 0.364,
-    "accuracy": 0.477,
-    "precision": 0.826,
-    "recall": 0.266,
-    "f1": 0.402,
-    "onsets": 91,
-    "onsets_caught": 28,
-    "recoveries": 44,
-    "recoveries_caught": 41
+   "dark": {
+    "n": 60,
+    "mae": 0.444,
+    "accuracy": 0.55,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 27,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Chad": {
+   "persistence_dark": {
+    "n": 299,
+    "mae": 0.224,
+    "accuracy": 0.786,
+    "precision": 0.562,
+    "recall": 0.386,
+    "f1": 0.458,
+    "onsets": 43,
+    "onsets_caught": 0,
+    "recoveries": 21,
+    "recoveries_caught": 0
    },
-   "dark_tfm": {
-    "n": 216,
-    "mae": 0.366,
-    "accuracy": 0.468,
-    "precision": 0.792,
-    "recall": 0.266,
-    "f1": 0.398,
-    "onsets": 91,
-    "onsets_caught": 24,
-    "recoveries": 44,
-    "recoveries_caught": 37
+   "dark": {
+    "n": 299,
+    "mae": 0.236,
+    "accuracy": 0.766,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 43,
+    "onsets_caught": 0,
+    "recoveries": 21,
+    "recoveries_caught": 21
+   }
+  },
+  "Colombia": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 62,
+    "mae": 0.123,
+    "accuracy": 0.903,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Côte d’Ivoire": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 66,
+    "mae": 0.069,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Democratic Republic of the Congo": {
+   "persistence_dark": {
+    "n": 248,
+    "mae": 0.091,
+    "accuracy": 0.923,
+    "precision": 0.844,
+    "recall": 0.659,
+    "f1": 0.74,
+    "onsets": 14,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 278,
+    "mae": 0.182,
+    "accuracy": 0.86,
+    "precision": 1.0,
+    "recall": 0.049,
+    "f1": 0.093,
+    "onsets": 14,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 5
+   }
+  },
+  "El Salvador": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 14,
+    "mae": 0.082,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Ethiopia": {
+   "persistence_dark": {
+    "n": 182,
+    "mae": 0.13,
+    "accuracy": 0.923,
+    "precision": 0.742,
+    "recall": 0.793,
+    "f1": 0.767,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 8,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 182,
+    "mae": 0.177,
+    "accuracy": 0.835,
+    "precision": 0.429,
+    "recall": 0.103,
+    "f1": 0.167,
+    "onsets": 6,
+    "onsets_caught": 0,
+    "recoveries": 8,
+    "recoveries_caught": 7
+   }
+  },
+  "Guatemala": {
+   "persistence_dark": {
+    "n": 286,
+    "mae": 0.179,
+    "accuracy": 0.78,
+    "precision": 0.644,
+    "recall": 0.72,
+    "f1": 0.68,
+    "onsets": 26,
+    "onsets_caught": 0,
+    "recoveries": 37,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 286,
+    "mae": 0.247,
+    "accuracy": 0.664,
+    "precision": 0.385,
+    "recall": 0.054,
+    "f1": 0.094,
+    "onsets": 26,
+    "onsets_caught": 0,
+    "recoveries": 37,
+    "recoveries_caught": 29
+   }
+  },
+  "Haiti": {
+   "persistence_dark": {
+    "n": 130,
+    "mae": 0.151,
+    "accuracy": 0.815,
+    "precision": 0.99,
+    "recall": 0.815,
+    "f1": 0.894,
+    "onsets": 23,
+    "onsets_caught": 0,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 130,
+    "mae": 0.224,
+    "accuracy": 0.677,
+    "precision": 0.988,
+    "recall": 0.669,
+    "f1": 0.798,
+    "onsets": 23,
+    "onsets_caught": 3,
+    "recoveries": 1,
+    "recoveries_caught": 0
+   }
+  },
+  "Honduras": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 54,
+    "mae": 0.176,
+    "accuracy": 0.87,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Kenya": {
+   "persistence_dark": {
+    "n": 611,
+    "mae": 0.13,
+    "accuracy": 0.858,
+    "precision": 0.576,
+    "recall": 0.392,
+    "f1": 0.466,
+    "onsets": 59,
+    "onsets_caught": 0,
+    "recoveries": 28,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 611,
+    "mae": 0.172,
+    "accuracy": 0.841,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 59,
+    "onsets_caught": 0,
+    "recoveries": 28,
+    "recoveries_caught": 28
+   }
+  },
+  "Lebanon": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 24,
+    "mae": 0.48,
+    "accuracy": 0.458,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 13,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Madagascar": {
+   "persistence_dark": {
+    "n": 299,
+    "mae": 0.062,
+    "accuracy": 0.96,
+    "precision": 0.364,
+    "recall": 0.444,
+    "f1": 0.4,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 7,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 299,
+    "mae": 0.066,
+    "accuracy": 0.97,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 7,
+    "recoveries_caught": 7
+   }
+  },
+  "Malawi": {
+   "persistence_dark": {
+    "n": 39,
+    "mae": 0.217,
+    "accuracy": 0.769,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 39,
+    "mae": 0.165,
+    "accuracy": 0.897,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 5
+   }
+  },
+  "Mali": {
+   "persistence_dark": {
+    "n": 117,
+    "mae": 0.072,
+    "accuracy": 0.966,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 139,
+    "mae": 0.102,
+    "accuracy": 0.942,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 8,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Mozambique": {
+   "persistence_dark": {
+    "n": 130,
+    "mae": 0.129,
+    "accuracy": 0.854,
+    "precision": 0.176,
+    "recall": 0.375,
+    "f1": 0.24,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 14,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 130,
+    "mae": 0.13,
+    "accuracy": 0.938,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 5,
+    "onsets_caught": 0,
+    "recoveries": 14,
+    "recoveries_caught": 14
+   }
+  },
+  "Nepal": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 14,
+    "mae": 0.041,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Niger": {
+   "persistence_dark": {
+    "n": 104,
+    "mae": 0.057,
+    "accuracy": 0.933,
+    "precision": 1.0,
+    "recall": 0.65,
+    "f1": 0.788,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 104,
+    "mae": 0.141,
+    "accuracy": 0.808,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 7,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Nigeria": {
+   "persistence_dark": {
+    "n": 481,
+    "mae": 0.061,
+    "accuracy": 0.913,
+    "precision": 0.55,
+    "recall": 0.478,
+    "f1": 0.512,
+    "onsets": 24,
+    "onsets_caught": 0,
+    "recoveries": 18,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 481,
+    "mae": 0.113,
+    "accuracy": 0.911,
+    "precision": 0.6,
+    "recall": 0.196,
+    "f1": 0.295,
+    "onsets": 24,
+    "onsets_caught": 0,
+    "recoveries": 18,
+    "recoveries_caught": 12
+   }
+  },
+  "Pakistan": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 14,
+    "mae": 0.238,
+    "accuracy": 0.786,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 3,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Somalia": {
+   "persistence_dark": {
+    "n": 221,
+    "mae": 0.456,
+    "accuracy": 0.389,
+    "precision": 0.624,
+    "recall": 0.394,
+    "f1": 0.483,
+    "onsets": 97,
+    "onsets_caught": 0,
+    "recoveries": 38,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 221,
+    "mae": 0.329,
+    "accuracy": 0.493,
+    "precision": 0.761,
+    "recall": 0.438,
+    "f1": 0.556,
+    "onsets": 97,
+    "onsets_caught": 46,
+    "recoveries": 38,
+    "recoveries_caught": 22
    }
   },
   "South Sudan": {
@@ -657,111 +2821,295 @@
    },
    "dark": {
     "n": 120,
-    "mae": 0.167,
-    "accuracy": 0.883,
-    "precision": 0.972,
-    "recall": 0.906,
-    "f1": 0.938,
-    "onsets": 3,
-    "onsets_caught": 2,
-    "recoveries": 3,
-    "recoveries_caught": 0
-   },
-   "dark_conf": {
-    "n": 120,
-    "mae": 0.184,
-    "accuracy": 0.9,
-    "precision": 0.973,
-    "recall": 0.923,
-    "f1": 0.947,
+    "mae": 0.103,
+    "accuracy": 0.975,
+    "precision": 0.975,
+    "recall": 1.0,
+    "f1": 0.987,
     "onsets": 3,
     "onsets_caught": 3,
     "recoveries": 3,
     "recoveries_caught": 0
-   },
-   "dark_tfm": {
-    "n": 120,
-    "mae": 0.191,
-    "accuracy": 0.883,
-    "precision": 0.972,
-    "recall": 0.906,
-    "f1": 0.938,
-    "onsets": 3,
-    "onsets_caught": 2,
-    "recoveries": 3,
+   }
+  },
+  "Sri Lanka": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
     "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 18,
+    "mae": 0.077,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Sudan": {
+   "persistence_dark": {
+    "n": 194,
+    "mae": 0.323,
+    "accuracy": 0.655,
+    "precision": 0.943,
+    "recall": 0.572,
+    "f1": 0.712,
+    "onsets": 62,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 198,
+    "mae": 0.384,
+    "accuracy": 0.515,
+    "precision": 0.93,
+    "recall": 0.366,
+    "f1": 0.525,
+    "onsets": 62,
+    "onsets_caught": 0,
+    "recoveries": 5,
+    "recoveries_caught": 1
+   }
+  },
+  "Syria": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 24,
+    "mae": 0.601,
+    "accuracy": 0.375,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 15,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Togo": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 10,
+    "mae": 0.04,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Uganda": {
+   "persistence_dark": {
+    "n": 44,
+    "mae": 0.014,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 44,
+    "mae": 0.034,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Ukraine": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 52,
+    "mae": 0.125,
+    "accuracy": 0.923,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0,
+    "onsets": 4,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Venezuela": {
+   "persistence_dark": {
+    "n": 0,
+    "mae": NaN,
+    "accuracy": null,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 50,
+    "mae": 0.1,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Yemen": {
+   "persistence_dark": {
+    "n": 208,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 208,
+    "mae": 0.016,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Zambia": {
+   "persistence_dark": {
+    "n": 20,
+    "mae": 0.0,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 20,
+    "mae": 0.231,
+    "accuracy": 1.0,
+    "precision": null,
+    "recall": null,
+    "f1": null,
+    "onsets": 0,
+    "onsets_caught": 0,
+    "recoveries": 0,
+    "recoveries_caught": 0
+   }
+  },
+  "Zimbabwe": {
+   "persistence_dark": {
+    "n": 130,
+    "mae": 0.422,
+    "accuracy": 0.585,
+    "precision": 0.222,
+    "recall": 0.345,
+    "f1": 0.27,
+    "onsets": 19,
+    "onsets_caught": 0,
+    "recoveries": 35,
+    "recoveries_caught": 0
+   },
+   "dark": {
+    "n": 130,
+    "mae": 0.252,
+    "accuracy": 0.723,
+    "precision": 0.267,
+    "recall": 0.138,
+    "f1": 0.182,
+    "onsets": 19,
+    "onsets_caught": 3,
+    "recoveries": 35,
+    "recoveries_caught": 27
    }
   }
  },
  "mae_diff_ci": {
   "full": {
-   "diff": 0.042,
-   "lo": 0.024,
-   "hi": 0.059
-  },
-  "full_conf": {
-   "diff": 0.043,
-   "lo": 0.024,
-   "hi": 0.06
-  },
-  "remote": {
-   "diff": 0.18,
-   "lo": 0.142,
-   "hi": 0.216
-  },
-  "dark": {
-   "diff": -0.001,
-   "lo": -0.047,
+   "diff": 0.038,
+   "lo": 0.03,
    "hi": 0.046
   },
-  "dark_conf": {
-   "diff": 0.007,
-   "lo": -0.042,
-   "hi": 0.056
+  "satellite": {
+   "diff": 0.116,
+   "lo": 0.101,
+   "hi": 0.132
   },
-  "dark_conf_vs_dark": {
-   "diff": 0.008,
-   "lo": 0.002,
-   "hi": 0.015
-  },
-  "full_tfm": {
-   "diff": 0.043,
-   "lo": 0.021,
-   "hi": 0.061
-  },
-  "full_tfm_vs_full": {
-   "diff": 0.001,
-   "lo": -0.005,
-   "hi": 0.007
-  },
-  "remote_tfm_vs_remote": {
-   "diff": 0.006,
-   "lo": 0.001,
-   "hi": 0.011
-  },
-  "dark_tfm": {
-   "diff": 0.008,
-   "lo": -0.04,
-   "hi": 0.055
-  },
-  "dark_tfm_vs_dark": {
-   "diff": 0.009,
-   "lo": -0.001,
-   "hi": 0.018
+  "dark": {
+   "diff": 0.032,
+   "lo": 0.022,
+   "hi": 0.043
   }
  },
- "driver_check": {
-  "r3q": {
-   "n": 479,
-   "mae_timesfm": 25.12,
-   "mae_last_value": 35.6842
-  },
-  "price_yoy": {
-   "n": 463,
-   "mae_timesfm": 0.1388,
-   "mae_last_value": 0.1465,
-   "n_national": 182,
-   "n_national_test": 188
-  }
- }
+ "test_countries": 38,
+ "test_regions": 633
 }
