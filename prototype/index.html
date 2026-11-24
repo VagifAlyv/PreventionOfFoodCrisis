@@ -23,6 +23,7 @@
         --obs: #2f6db5;
         --model: #6b4fbb;
         --fews: #2e8b57;
+        --tfm: #b0651f;
         --dark: #3b4a5a;
         --empty: #e3e8eb;
         --note: #fbf3e2;
@@ -42,6 +43,7 @@
           --obs: #5b9be6;
           --model: #9c83e8;
           --fews: #4fb57e;
+          --tfm: #e3a35c;
           --dark: #8a9aab;
           --empty: #222a33;
           --note: #2a2316;
@@ -61,6 +63,7 @@
         --obs: #5b9be6;
         --model: #9c83e8;
         --fews: #4fb57e;
+        --tfm: #e3a35c;
         --dark: #8a9aab;
         --empty: #222a33;
         --note: #2a2316;
@@ -728,6 +731,7 @@
           ? [
               ["persistence", sc.baseName, "--muted", "Repeat the last known status. Hard to beat."],
               ["full", sc.name, "--model", "Rainfall, prices and the last assessment."],
+              ["full_tfm", "Plus Google TimesFM", "--tfm", "This tool plus TimesFM 2.5 forecasts of rainfall and prices."],
               [HAS_NEWS ? "remote_news" : "remote", "No ground data at all", "--dark", "Rainfall, prices, conflict" + (HAS_NEWS ? ", news." : ".")],
               ["fews", "FEWS NET analysts", "--fews", "Human experts with field teams."],
             ]
@@ -735,6 +739,7 @@
               ["persistence_dark", sc.baseName, "--muted", "What you are left with when monitoring stops."],
               [darkKey, sc.name, "--model", "Year-old assessment plus rainfall, prices, conflict" + (HAS_NEWS ? " and news." : ".")],
               ["dark", HAS_NEWS ? "Without conflict or news" : "Without conflict data", "--dark", "Year-old assessment plus rainfall and prices."],
+              ["dark_tfm", "Plus Google TimesFM", "--tfm", "Year-old assessment, rainfall and prices, plus TimesFM 2.5 forecasts of both."],
             ];
         $("score").innerHTML = defs.map(([k, name, col, d]) => {
           const m = M[k];
@@ -979,11 +984,16 @@
         ];
         if (HAS_NEWS && CI.dark_news_vs_dark)
           lessons.push(`Adding hunger news from GDELT changed the dark-scenario error by ${CI.dark_news_vs_dark.diff >= 0 ? "+" : ""}${Math.round(CI.dark_news_vs_dark.diff * 100)} points (95% range ${Math.round(CI.dark_news_vs_dark.lo * 100)} to ${Math.round(CI.dark_news_vs_dark.hi * 100)}).`);
+        const dc = D.metrics.driver_check, sg = (v) => (v < 0 ? "−" : "+") + Math.abs(v * 100).toFixed(1);
+        const rng = (c) => `${sg(c.diff)} points (95% range ${sg(c.lo)} to ${sg(c.hi)})`;
+        if (dc && CI.full_tfm_vs_full && CI.dark_tfm_vs_dark)
+          lessons.push(`Google's TimesFM 2.5 forecast rainfall better than repeating the last value (average error ${dc.r3q.mae_timesfm.toFixed(1)} against ${dc.r3q.mae_last_value.toFixed(1)} points of % of normal), ` +
+            `but adding its rainfall and price forecasts did not improve the crisis forecast: average error ${rng(CI.full_tfm_vs_full)} while monitoring works and ${rng(CI.dark_tfm_vs_dark)} in the dark.`);
         lessons.push(`No assessments exist for ${gapDates.map(fmtDate).join(" and ") || "some periods"}, the months of the 2025 funding stop.`);
         $("lessons").innerHTML = lessons.map((t) => `<li>${t}</li>`).join("");
         $("foot").innerHTML =
           `Data: FEWS NET Data Warehouse (IPC classifications); WFP food prices and CHIRPS rainfall indicators via HDX; UCDP GED 26.1 and Candidate Events to ${fmtDate(D.conflict_through)}; ` +
-          (HAS_NEWS ? "GDELT DOC 2.0 news volumes; " : "") +
+          (HAS_NEWS ? "GDELT DOC 2.0 news volumes; " : "") + "TimesFM 2.5 forecasting model (Google Research, Apache-2.0); " +
           `region outlines from geoBoundaries. Model: gradient-boosted trees, ${D.train_rows} training cases before ${fmtDate(D.test_from)}, ${D.test_rows} test cases. ` +
           `Built ${D.generated}. Student prototype for a university course, not for operational use. All numbers can be checked with <code>python3 src/verify.py</code>.`;
       }

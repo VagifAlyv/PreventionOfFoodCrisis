@@ -82,7 +82,7 @@ This is an independent audit, and it exits with an error if any check fails. It 
 
 | Method | Correct crisis calls | New crises foreseen | Average error | Cases |
 | --- | --- | --- | --- | --- |
-| Repeat the year-old assessment <!-- dark.persistence_dark --> | 68% | 0 of 98 | 26 points | 479 |
+| Repeat the year-old assessment <!-- dark.persistence_dark --> | 69% | 0 of 98 | 26 points | 479 |
 | This tool in the dark <!-- dark.dark --> | 67% | 31 of 98 | 26 points | 479 |
 | This tool in the dark, plus conflict <!-- dark.dark_conf --> | 67% | 31 of 98 | 27 points | 479 |
 | This tool in the dark, plus TimesFM <!-- dark.dark_tfm --> | 66% | 26 of 98 | 27 points | 479 |
@@ -92,7 +92,7 @@ The 95% ranges below come from a paired bootstrap over assessment dates, in `met
 ## What the results show
 
 1. **While monitoring works, the tool does not beat simply repeating the last assessment.** Its average error is 4 points higher (95% range 2 to 6). Food crises persist, so that baseline is strong, and FEWS NET analysts beat both.
-2. **Once monitoring stops, the old assessment loses most of its value.** Its accuracy falls from 86% to 68%, and 98 regions enter a crisis it cannot foresee by definition.
+2. **Once monitoring stops, the old assessment loses most of its value.** Its accuracy falls from 86% to 69%, and 98 regions enter a crisis it cannot foresee by definition.
 3. **In the dark, the tool's average error is no different from the year-old assessment** (difference 0 points, 95% range −5 to +5). The two fail in different ways:
    - The tool foresees 31 of 98 new crises and 43 of 53 recoveries. The year-old assessment foresees none of either.
    - When the tool calls a crisis it is right 88% of the time, against 78% for the old assessment.

@@ -11,6 +11,7 @@ Run:  python3 src/verify.py   (after build_dataset.py and train_model.py)
 """
 import json
 import re
+from decimal import ROUND_HALF_UP, Decimal
 import sys
 from pathlib import Path
 
@@ -140,6 +141,11 @@ for var in ("r3q", "price_yoy"):
     check(f"driver check '{var}' recomputed from predictions.csv",
           got == metrics.get("driver_check", {}).get(var), f"got={got}")
 
+def pct(x):
+    """Half-up percent of a 3-decimal metric, as the dashboard shows it (0.685 -> 69, not float round's 68)."""
+    return int((Decimal(str(x)) * 100).quantize(Decimal(1), ROUND_HALF_UP))
+
+
 readme = (ROOT / "README.md").read_text()
 n_rows = 0
 for line in readme.splitlines():
@@ -149,8 +155,8 @@ for line in readme.splitlines():
     n_rows += 1
     scope, key = m_.group(1), m_.group(2)
     m = metrics[scope][key]
-    ok = (int(m_.group(3)) == round(m["accuracy"] * 100) and int(m_.group(4)) == m["onsets_caught"]
-          and int(m_.group(5)) == m["onsets"] and int(m_.group(6)) == round(m["mae"] * 100))
+    ok = (int(m_.group(3)) == pct(m["accuracy"]) and int(m_.group(4)) == m["onsets_caught"]
+          and int(m_.group(5)) == m["onsets"] and int(m_.group(6)) == pct(m["mae"]))
     check(f"README row {scope}.{key} matches metrics.json", ok, f"metrics={m}")
 check("README results tables were found and checked", n_rows >= 6, f"rows={n_rows}")
 
